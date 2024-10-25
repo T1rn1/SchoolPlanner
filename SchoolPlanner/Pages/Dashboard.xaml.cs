@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SchoolPlanner.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,11 @@ namespace SchoolPlanner.Pages
     /// </summary>
     public partial class Dashboard : Page
     {
-        public Dashboard()
+        private dbContext _dbContext;
+        public Dashboard(dbContext context)
         {
             InitializeComponent();
+            _dbContext = context;
         }
     }
 }
