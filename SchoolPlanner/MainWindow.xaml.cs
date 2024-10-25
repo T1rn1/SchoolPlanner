@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using SchoolPlanner.Models;
+using SchoolPlanner.Pages;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -17,9 +19,12 @@ namespace SchoolPlanner
     /// </summary>
     public partial class MainWindow : Window
     {
+        private dbContext dbContext;
         public MainWindow()
         {
             InitializeComponent();
+
+            dbContext = new dbContext();
         }
 
         private void BG_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -203,12 +208,15 @@ namespace SchoolPlanner
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
-            fContainer.Navigate(new System.Uri("Pages/Home.xaml", UriKind.RelativeOrAbsolute));
+            Pages.Home homePage = new Pages.Home(dbContext);
+            fContainer.Navigate(homePage);
         }
+
 
         private void btnDashboard_Click(object sender, RoutedEventArgs e)
         {
-            fContainer.Navigate(new System.Uri("Pages/Dashboard.xaml", UriKind.RelativeOrAbsolute));
+            Pages.Dashboard homePage = new Pages.Dashboard();
+            fContainer.Navigate(homePage);
         }
     }
 }
