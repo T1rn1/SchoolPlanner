@@ -215,7 +215,7 @@ namespace SchoolPlanner
 
         private void btnDashboard_Click(object sender, RoutedEventArgs e)
         {
-            Pages.Dashboard homePage = new Pages.Dashboard();
+            Pages.Dashboard homePage = new Pages.Dashboard(dbContext);
             fContainer.Navigate(homePage);
         }
     }
