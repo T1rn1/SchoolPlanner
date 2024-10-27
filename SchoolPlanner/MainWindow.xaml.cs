@@ -33,18 +33,18 @@ namespace SchoolPlanner
         }
 
         // Start: MenuLeft PopupButton //
-        private void btnHome_MouseEnter(object sender, MouseEventArgs e)
+        private void btnTeacher_MouseEnter(object sender, MouseEventArgs e)
         {
             if (Tg_Btn.IsChecked == false)
             {
                 Popup.PlacementTarget = btnHome;
                 Popup.Placement = PlacementMode.Right;
                 Popup.IsOpen = true;
-                Header.PopupText.Text = "Home";
+                Header.PopupText.Text = "Преподаватели";
             }
         }
 
-        private void btnHome_MouseLeave(object sender, MouseEventArgs e)
+        private void btnTeacher_MouseLeave(object sender, MouseEventArgs e)
         {
             Popup.Visibility = Visibility.Collapsed;
             Popup.IsOpen = false;
@@ -206,9 +206,9 @@ namespace SchoolPlanner
         }
         // End: Button Close | Restore | Minimize
 
-        private void btnHome_Click(object sender, RoutedEventArgs e)
+        private void btnTeacher_Click(object sender, RoutedEventArgs e)
         {
-            Pages.Home homePage = new Pages.Home(dbContext);
+            Pages.Teacher homePage = new Pages.Teacher(dbContext);
             fContainer.Navigate(homePage);
         }
 

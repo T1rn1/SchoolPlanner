@@ -19,19 +19,14 @@ namespace SchoolPlanner.Pages
     /// <summary>
     /// Lógica de interacción para Home.xaml
     /// </summary>
-    public partial class Home : Page
+    public partial class Teacher : Page
     {
         private dbContext _dbContext;
 
-        public Home(dbContext context)
+        public Teacher(dbContext context)
         {
             InitializeComponent();
             _dbContext = context;
-
-            Cycliccommission c1 = new Cycliccommission { Id = 1, Name = "test1" };
-            Cycliccommission c2 = new Cycliccommission { Id = 2, Name = "test2"};
-            _dbContext.Cycliccommissions.Add(c1);
-            _dbContext.Cycliccommissions.Add(c2);
 
             _dbContext.SaveChanges();
 
