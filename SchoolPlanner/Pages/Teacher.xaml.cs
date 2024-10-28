@@ -27,12 +27,6 @@ namespace SchoolPlanner.Pages
         {
             InitializeComponent();
             _dbContext = context;
-
-            _dbContext.SaveChanges();
-
-            var obj = _dbContext.Cycliccommissions.ToList();
-
-            Title.Text = obj.Count.ToString();
         }
     }
 }
