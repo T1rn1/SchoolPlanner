@@ -1,16 +1,9 @@
 ﻿using SchoolPlanner.Models;
 using SchoolPlanner.Pages;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace SchoolPlanner
 {
@@ -19,12 +12,12 @@ namespace SchoolPlanner
     /// </summary>
     public partial class MainWindow : Window
     {
-        private dbContext dbContext;
+        private SchoolPlannerContext dbContext;
         public MainWindow()
         {
             InitializeComponent();
 
-            dbContext = new dbContext();
+            dbContext = new SchoolPlannerContext();
         }
 
         private void BG_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -212,10 +205,9 @@ namespace SchoolPlanner
             fContainer.Navigate(homePage);
         }
 
-
         private void btnDashboard_Click(object sender, RoutedEventArgs e)
         {
-            Pages.Dashboard homePage = new Pages.Dashboard(dbContext);
+            Dashboard homePage = new Dashboard(dbContext);
             fContainer.Navigate(homePage);
         }
     }
