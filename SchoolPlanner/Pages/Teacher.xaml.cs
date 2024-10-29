@@ -42,15 +42,6 @@ namespace SchoolPlanner.Pages
                     VerticalAlignment = VerticalAlignment.Top,
                     Background = (SolidColorBrush)FindResource("PrimaryBackgroundColor"),
                     Margin = new Thickness(10),
-                    
-                };
-
-                Border border = new Border
-                {
-                    BorderThickness = new Thickness(1),
-                    CornerRadius = new CornerRadius(10),
-                    Background = new SolidColorBrush(Colors.LightGray),
-                    Child = outerStackPanel,
                 };
 
                 StackPanel innerStackPanel1 = new StackPanel
@@ -111,7 +102,7 @@ namespace SchoolPlanner.Pages
                 outerStackPanel.Children.Add(innerStackPanel2);
                 outerStackPanel.Children.Add(innerStackPanel3);
 
-                MainStackPanel.Children.Add(border);
+                MainStackPanel.Children.Add(outerStackPanel);
             }
 
         }
