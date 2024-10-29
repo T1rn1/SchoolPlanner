@@ -5,6 +5,8 @@ namespace SchoolPlanner.Models;
 
 public partial class Schedule
 {
+    public int Id { get; set; }
+
     public TimeOnly Time { get; set; }
 
     public DateOnly Date { get; set; }

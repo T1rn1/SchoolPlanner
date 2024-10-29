@@ -5,13 +5,13 @@ using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
 namespace SchoolPlanner.Models;
 
-public partial class dbContext : DbContext
+public partial class SchoolPlannerContext : DbContext
 {
-    public dbContext()
+    public SchoolPlannerContext()
     {
     }
 
-    public dbContext(DbContextOptions<dbContext> options)
+    public SchoolPlannerContext(DbContextOptions<SchoolPlannerContext> options)
         : base(options)
     {
     }
@@ -50,32 +50,32 @@ public partial class dbContext : DbContext
 
             entity.ToTable("cycliccommission");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("ID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Name).HasMaxLength(30);
         });
 
         modelBuilder.Entity<Grade>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("grade");
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("grade");
 
             entity.HasIndex(e => e.IdLessonType, "ID_lessonType");
 
             entity.HasIndex(e => e.IdSubject, "ID_subject");
 
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Date).HasColumnName("date");
             entity.Property(e => e.Grade1).HasColumnName("grade");
             entity.Property(e => e.IdLessonType).HasColumnName("ID_lessonType");
             entity.Property(e => e.IdSubject).HasColumnName("ID_subject");
 
-            entity.HasOne(d => d.IdLessonTypeNavigation).WithMany()
+            entity.HasOne(d => d.IdLessonTypeNavigation).WithMany(p => p.Grades)
                 .HasForeignKey(d => d.IdLessonType)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("grade_ibfk_1");
 
-            entity.HasOne(d => d.IdSubjectNavigation).WithMany()
+            entity.HasOne(d => d.IdSubjectNavigation).WithMany(p => p.Grades)
                 .HasForeignKey(d => d.IdSubject)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("grade_ibfk_2");
@@ -83,12 +83,13 @@ public partial class dbContext : DbContext
 
         modelBuilder.Entity<Homework>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("homework");
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("homework");
 
             entity.HasIndex(e => e.IdSubject, "ID_subject");
 
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.IdSubject).HasColumnName("ID_subject");
             entity.Property(e => e.Note)
                 .HasColumnType("text")
@@ -97,7 +98,7 @@ public partial class dbContext : DbContext
                 .HasMaxLength(20)
                 .HasColumnName("tusk");
 
-            entity.HasOne(d => d.IdSubjectNavigation).WithMany()
+            entity.HasOne(d => d.IdSubjectNavigation).WithMany(p => p.Homeworks)
                 .HasForeignKey(d => d.IdSubject)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("homework_ibfk_1");
@@ -109,9 +110,7 @@ public partial class dbContext : DbContext
 
             entity.ToTable("lessontype");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("ID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Type)
                 .HasMaxLength(15)
                 .HasColumnName("type");
@@ -125,9 +124,7 @@ public partial class dbContext : DbContext
 
             entity.HasIndex(e => e.IdReason, "ID_reason");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("ID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.IdReason).HasColumnName("ID_reason");
             entity.Property(e => e.Note)
                 .HasColumnType("text")
@@ -145,9 +142,7 @@ public partial class dbContext : DbContext
 
             entity.ToTable("reason");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("ID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Name)
                 .HasMaxLength(15)
                 .HasColumnName("name");
@@ -155,14 +150,15 @@ public partial class dbContext : DbContext
 
         modelBuilder.Entity<Schedule>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("schedule");
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("schedule");
 
             entity.HasIndex(e => e.IdPass, "ID_pass");
 
             entity.HasIndex(e => e.IdSubject, "ID_subject");
 
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Class).HasColumnName("class");
             entity.Property(e => e.Date).HasColumnName("date");
             entity.Property(e => e.IdPass).HasColumnName("ID_pass");
@@ -171,12 +167,12 @@ public partial class dbContext : DbContext
                 .HasColumnType("time")
                 .HasColumnName("time");
 
-            entity.HasOne(d => d.IdPassNavigation).WithMany()
+            entity.HasOne(d => d.IdPassNavigation).WithMany(p => p.Schedules)
                 .HasForeignKey(d => d.IdPass)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("schedule_ibfk_1");
 
-            entity.HasOne(d => d.IdSubjectNavigation).WithMany()
+            entity.HasOne(d => d.IdSubjectNavigation).WithMany(p => p.Schedules)
                 .HasForeignKey(d => d.IdSubject)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("schedule_ibfk_2");
@@ -192,9 +188,7 @@ public partial class dbContext : DbContext
 
             entity.HasIndex(e => e.IdTeacher, "ID_teacher");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("ID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.IdCyclicCommission).HasColumnName("ID_cyclicCommission");
             entity.Property(e => e.IdTeacher).HasColumnName("ID_teacher");
             entity.Property(e => e.Name)
@@ -221,9 +215,7 @@ public partial class dbContext : DbContext
 
             entity.ToTable("teacher");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("ID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.FullName)
                 .HasMaxLength(30)
                 .HasColumnName("fullName");

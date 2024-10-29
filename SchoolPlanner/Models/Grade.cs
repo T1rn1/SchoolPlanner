@@ -5,6 +5,8 @@ namespace SchoolPlanner.Models;
 
 public partial class Grade
 {
+    public int Id { get; set; }
+
     public int Grade1 { get; set; }
 
     public DateOnly Date { get; set; }

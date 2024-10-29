@@ -13,9 +13,15 @@ public partial class Subject
 
     public int IdCyclicCommission { get; set; }
 
-    public string Note { get; set; } = null!;
+    public string? Note { get; set; }
+
+    public virtual ICollection<Grade> Grades { get; set; } = new List<Grade>();
+
+    public virtual ICollection<Homework> Homeworks { get; set; } = new List<Homework>();
 
     public virtual Cycliccommission IdCyclicCommissionNavigation { get; set; } = null!;
 
     public virtual Teacher IdTeacherNavigation { get; set; } = null!;
+
+    public virtual ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
 }

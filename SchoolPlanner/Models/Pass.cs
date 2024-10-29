@@ -9,7 +9,9 @@ public partial class Pass
 
     public int IdReason { get; set; }
 
-    public string Note { get; set; } = null!;
+    public string? Note { get; set; }
 
     public virtual Reason IdReasonNavigation { get; set; } = null!;
+
+    public virtual ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
 }
