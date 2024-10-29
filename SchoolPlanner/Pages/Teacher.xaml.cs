@@ -1,18 +1,7 @@
 ﻿using SchoolPlanner.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SchoolPlanner.Pages
 {
@@ -21,12 +10,110 @@ namespace SchoolPlanner.Pages
     /// </summary>
     public partial class Teacher : Page
     {
-        private dbContext _dbContext;
+        private SchoolPlannerContext _dbContext;
 
-        public Teacher(dbContext context)
+        public Teacher(SchoolPlannerContext context)
         {
             InitializeComponent();
             _dbContext = context;
+
+            CreateStackPanelWithData();
+        }
+
+        public void CreateStackPanelWithData()
+        {
+            StackPanel MainStackPanel = new StackPanel {
+                Orientation = Orientation.Vertical,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Top,
+                Name = "MainStackPanel"
+            };
+            MainGrid.Children.Add(MainStackPanel);
+
+            List<Models.Teacher> teachers = _dbContext.Teachers.ToList();
+
+            foreach (var item in teachers)
+            {
+               
+                StackPanel outerStackPanel = new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Background = (SolidColorBrush)FindResource("PrimaryBackgroundColor"),
+                    Margin = new Thickness(10),
+                    
+                };
+
+                Border border = new Border
+                {
+                    BorderThickness = new Thickness(1),
+                    CornerRadius = new CornerRadius(10),
+                    Background = new SolidColorBrush(Colors.LightGray),
+                    Child = outerStackPanel,
+                };
+
+                StackPanel innerStackPanel1 = new StackPanel
+                {
+                    Orientation = Orientation.Vertical,
+                    Margin = new Thickness(10)
+                };
+                TextBlock textBlock1a = new TextBlock
+                {
+                    Text = "ФИО",
+                    Margin = new Thickness(10)
+                };
+                TextBlock textBlock1b = new TextBlock
+                {
+                    Text = item.FullName,
+                    Margin = new Thickness(10)
+                };
+                innerStackPanel1.Children.Add(textBlock1a);
+                innerStackPanel1.Children.Add(textBlock1b);
+
+                StackPanel innerStackPanel2 = new StackPanel
+                {
+                    Orientation = Orientation.Vertical,
+                    Margin = new Thickness(10)
+                };
+                TextBlock textBlock2a = new TextBlock
+                {
+                    Text = "Телефон",
+                    Margin = new Thickness(10)
+                };
+                TextBlock textBlock2b = new TextBlock
+                {
+                    Text = item.TelephoneNumber.ToString(),
+                    Margin = new Thickness(10)
+                };
+                innerStackPanel2.Children.Add(textBlock2a);
+                innerStackPanel2.Children.Add(textBlock2b);
+
+                StackPanel innerStackPanel3 = new StackPanel
+                {
+                    Orientation = Orientation.Vertical,
+                    Margin = new Thickness(10)
+                };
+                TextBlock textBlock3a = new TextBlock
+                {
+                    Text = "Рабочее время",
+                    Margin = new Thickness(10)
+                };
+                TextBlock textBlock3b = new TextBlock
+                {
+                    Text = item.WorkingHours,
+                    Margin = new Thickness(10)
+                };
+                innerStackPanel3.Children.Add(textBlock3a);
+                innerStackPanel3.Children.Add(textBlock3b);
+
+                outerStackPanel.Children.Add(innerStackPanel1);
+                outerStackPanel.Children.Add(innerStackPanel2);
+                outerStackPanel.Children.Add(innerStackPanel3);
+
+                MainStackPanel.Children.Add(border);
+            }
+
         }
     }
 }
