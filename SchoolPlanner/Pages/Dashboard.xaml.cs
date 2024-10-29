@@ -21,8 +21,8 @@ namespace SchoolPlanner.Pages
     /// </summary>
     public partial class Dashboard : Page
     {
-        private dbContext _dbContext;
-        public Dashboard(dbContext context)
+        private SchoolPlannerContext _dbContext;
+        public Dashboard(SchoolPlannerContext context)
         {
             InitializeComponent();
             _dbContext = context;
