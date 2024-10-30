@@ -11,11 +11,18 @@ namespace SchoolPlanner.Pages
     public partial class Teacher : Page
     {
         private SchoolPlannerContext _dbContext;
+        private SolidColorBrush PrimaryBackgroundColor;
+        private SolidColorBrush TextTertiaryColor;
+        private Style placeholderTextBoxStyle;
 
         public Teacher(SchoolPlannerContext context)
         {
             InitializeComponent();
             _dbContext = context;
+
+            PrimaryBackgroundColor = (SolidColorBrush)FindResource("PrimaryBackgroundColor");
+            TextTertiaryColor = (SolidColorBrush)FindResource("TextTertiaryColor");
+            placeholderTextBoxStyle = (Style)FindResource("PlaceholderTextBoxStyle");
 
             CreateStackPanelWithData();
         }
