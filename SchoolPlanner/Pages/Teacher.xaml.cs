@@ -29,11 +29,11 @@ namespace SchoolPlanner.Pages
 
         public void CreateStackPanelWithData()
         {
-            StackPanel MainStackPanel = new StackPanel {
+            StackPanel MainStackPanel = new StackPanel
+            {
                 Orientation = Orientation.Vertical,
-                HorizontalAlignment = HorizontalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Top,
-                Name = "MainStackPanel"
             };
             MainGrid.Children.Add(MainStackPanel);
 
@@ -41,14 +41,25 @@ namespace SchoolPlanner.Pages
 
             foreach (var item in teachers)
             {
-               
-                StackPanel outerStackPanel = new StackPanel
+                DockPanel ItemDockPanel = new DockPanel
+                {
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+
+                Border border = new Border {
+                    CornerRadius = new CornerRadius(10),
+                    Background = PrimaryBackgroundColor,
+                    Child = ItemDockPanel,
+                    Margin = new Thickness(10),
+                    Padding = new Thickness(3)
+                };
+
+                StackPanel LeftStackPanel = new StackPanel
                 {
                     Orientation = Orientation.Horizontal,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Top,
-                    Background = (SolidColorBrush)FindResource("PrimaryBackgroundColor"),
-                    Margin = new Thickness(10),
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Center,
                 };
 
                 StackPanel innerStackPanel1 = new StackPanel
@@ -56,62 +67,136 @@ namespace SchoolPlanner.Pages
                     Orientation = Orientation.Vertical,
                     Margin = new Thickness(10)
                 };
+
                 TextBlock textBlock1a = new TextBlock
                 {
                     Text = "ФИО",
-                    Margin = new Thickness(10)
+                    Foreground = TextTertiaryColor,
+                    FontWeight = FontWeights.Bold,
+                    Margin = new Thickness(10),
                 };
-                TextBlock textBlock1b = new TextBlock
+
+                TextBox textBox1b = new TextBox
                 {
                     Text = item.FullName,
-                    Margin = new Thickness(10)
+                    Margin = new Thickness(10),
+                    Style = placeholderTextBoxStyle,
+                    IsReadOnly = true,
+                    MaxWidth = 250,
                 };
+
                 innerStackPanel1.Children.Add(textBlock1a);
-                innerStackPanel1.Children.Add(textBlock1b);
+                innerStackPanel1.Children.Add(textBox1b);
 
                 StackPanel innerStackPanel2 = new StackPanel
                 {
                     Orientation = Orientation.Vertical,
                     Margin = new Thickness(10)
                 };
+
                 TextBlock textBlock2a = new TextBlock
                 {
                     Text = "Телефон",
-                    Margin = new Thickness(10)
+                    Foreground = TextTertiaryColor,
+                    FontWeight = FontWeights.Bold,
+                    Margin = new Thickness(10),
                 };
-                TextBlock textBlock2b = new TextBlock
+
+                TextBox textBox2b = new TextBox
                 {
                     Text = item.TelephoneNumber.ToString(),
-                    Margin = new Thickness(10)
+                    Margin = new Thickness(10),
+                    Style = placeholderTextBoxStyle,
+                    IsReadOnly = true,
+                    Width = 100,
                 };
+
                 innerStackPanel2.Children.Add(textBlock2a);
-                innerStackPanel2.Children.Add(textBlock2b);
+                innerStackPanel2.Children.Add(textBox2b);
 
                 StackPanel innerStackPanel3 = new StackPanel
                 {
                     Orientation = Orientation.Vertical,
                     Margin = new Thickness(10)
                 };
+
                 TextBlock textBlock3a = new TextBlock
                 {
                     Text = "Рабочее время",
-                    Margin = new Thickness(10)
+                    Foreground = TextTertiaryColor,
+                    FontWeight = FontWeights.Bold,
+                    Margin = new Thickness(10),
                 };
-                TextBlock textBlock3b = new TextBlock
+
+                TextBox textBox3b = new TextBox
                 {
                     Text = item.WorkingHours,
+                    Margin = new Thickness(10),
+                    Style = placeholderTextBoxStyle,
+                    IsReadOnly = true,
+                    Width = 100,
+                };
+
+                innerStackPanel3.Children.Add(textBlock3a);
+                innerStackPanel3.Children.Add(textBox3b);
+
+                LeftStackPanel.Children.Add(innerStackPanel1);
+                LeftStackPanel.Children.Add(innerStackPanel2);
+                LeftStackPanel.Children.Add(innerStackPanel3);
+
+                ItemDockPanel.Children.Add(LeftStackPanel);
+
+                StackPanel RightStackPanel = new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Center,
                     Margin = new Thickness(10)
                 };
-                innerStackPanel3.Children.Add(textBlock3a);
-                innerStackPanel3.Children.Add(textBlock3b);
 
-                outerStackPanel.Children.Add(innerStackPanel1);
-                outerStackPanel.Children.Add(innerStackPanel2);
-                outerStackPanel.Children.Add(innerStackPanel3);
+                Button SaveChangesBtn = new Button
+                {
+                    Content = "Д",
+                    Margin = new Thickness(5)
+                };
 
-                MainStackPanel.Children.Add(outerStackPanel);
+                Button EditBtn = new Button {
+                    Content = "Р",
+                    Margin = new Thickness(5)
+                };
+                
+                Button DeleteBtn = new Button {
+                    Content = "У",
+                    Margin = new Thickness(5)
+                };
+
+                SaveChangesBtn.Click += (s, e) =>
+                {
+                    
+                };
+
+                EditBtn.Click += (s, e) =>
+                {
+                    if (textBox1b.IsReadOnly)
+                    {
+                        textBox1b.IsReadOnly = false;
+                        textBox2b.IsReadOnly = false;
+                        textBox3b.IsReadOnly = false;
+                    }
+                    else
+                    {
+                        textBox1b.IsReadOnly = true;
+                        textBox2b.IsReadOnly = true;
+                        textBox3b.IsReadOnly = true;
+                    }
+                };
+                
+                RightStackPanel.Children.Add(SaveChangesBtn);
+                RightStackPanel.Children.Add(EditBtn);
+                RightStackPanel.Children.Add(DeleteBtn);
+                ItemDockPanel.Children.Add(RightStackPanel);
+                MainStackPanel.Children.Add(border);
             }
-
         }
     }
 }
