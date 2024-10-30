@@ -1,7 +1,9 @@
 ﻿using SchoolPlanner.Models;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace SchoolPlanner.Pages
 {
@@ -11,6 +13,7 @@ namespace SchoolPlanner.Pages
     public partial class Teacher : Page
     {
         private SchoolPlannerContext _dbContext;
+
         private SolidColorBrush PrimaryBackgroundColor;
         private SolidColorBrush TextTertiaryColor;
         private Style placeholderTextBoxStyle;
@@ -54,7 +57,8 @@ namespace SchoolPlanner.Pages
                 DockPanel ItemDockPanel = new DockPanel
                 {
                     HorizontalAlignment = HorizontalAlignment.Stretch,
-                    VerticalAlignment = VerticalAlignment.Center
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Tag = item.Id,
                 };
 
                 Border border = new Border {
@@ -78,7 +82,7 @@ namespace SchoolPlanner.Pages
                     Margin = new Thickness(10)
                 };
 
-                TextBlock textBlock1a = new TextBlock
+                TextBlock FullNameTextBlock = new TextBlock
                 {
                     Text = "ФИО",
                     Foreground = TextTertiaryColor,
@@ -86,7 +90,7 @@ namespace SchoolPlanner.Pages
                     Margin = new Thickness(10),
                 };
 
-                TextBox textBox1b = new TextBox
+                TextBox FullNameTextBox = new TextBox
                 {
                     Text = item.FullName,
                     Margin = new Thickness(10),
@@ -95,8 +99,8 @@ namespace SchoolPlanner.Pages
                     MaxWidth = 250,
                 };
 
-                innerStackPanel1.Children.Add(textBlock1a);
-                innerStackPanel1.Children.Add(textBox1b);
+                innerStackPanel1.Children.Add(FullNameTextBlock);
+                innerStackPanel1.Children.Add(FullNameTextBox);
 
                 StackPanel innerStackPanel2 = new StackPanel
                 {
@@ -104,7 +108,7 @@ namespace SchoolPlanner.Pages
                     Margin = new Thickness(10)
                 };
 
-                TextBlock textBlock2a = new TextBlock
+                TextBlock TelephoneNumberTextBlock = new TextBlock
                 {
                     Text = "Телефон",
                     Foreground = TextTertiaryColor,
@@ -112,7 +116,7 @@ namespace SchoolPlanner.Pages
                     Margin = new Thickness(10),
                 };
 
-                TextBox textBox2b = new TextBox
+                TextBox TelephoneNumberTextBox = new TextBox
                 {
                     Text = item.TelephoneNumber.ToString(),
                     Margin = new Thickness(10),
@@ -121,8 +125,8 @@ namespace SchoolPlanner.Pages
                     Width = 100,
                 };
 
-                innerStackPanel2.Children.Add(textBlock2a);
-                innerStackPanel2.Children.Add(textBox2b);
+                innerStackPanel2.Children.Add(TelephoneNumberTextBlock);
+                innerStackPanel2.Children.Add(TelephoneNumberTextBox);
 
                 StackPanel innerStackPanel3 = new StackPanel
                 {
@@ -130,7 +134,7 @@ namespace SchoolPlanner.Pages
                     Margin = new Thickness(10)
                 };
 
-                TextBlock textBlock3a = new TextBlock
+                TextBlock WorkingHoursTextBlock = new TextBlock
                 {
                     Text = "Рабочее время",
                     Foreground = TextTertiaryColor,
@@ -138,7 +142,7 @@ namespace SchoolPlanner.Pages
                     Margin = new Thickness(10),
                 };
 
-                TextBox textBox3b = new TextBox
+                TextBox WorkingHoursTextBox = new TextBox
                 {
                     Text = item.WorkingHours,
                     Margin = new Thickness(10),
@@ -147,8 +151,8 @@ namespace SchoolPlanner.Pages
                     Width = 100,
                 };
 
-                innerStackPanel3.Children.Add(textBlock3a);
-                innerStackPanel3.Children.Add(textBox3b);
+                innerStackPanel3.Children.Add(WorkingHoursTextBlock);
+                innerStackPanel3.Children.Add(WorkingHoursTextBox);
 
                 LeftStackPanel.Children.Add(innerStackPanel1);
                 LeftStackPanel.Children.Add(innerStackPanel2);
@@ -161,6 +165,7 @@ namespace SchoolPlanner.Pages
                     Orientation = Orientation.Horizontal,
                     HorizontalAlignment = HorizontalAlignment.Right,
                     VerticalAlignment = VerticalAlignment.Center,
+                    
                     Margin = new Thickness(10)
                 };
 
@@ -219,7 +224,7 @@ namespace SchoolPlanner.Pages
                         entityToEdit.FullName = FullNameTextBox.Text;
                         entityToEdit.TelephoneNumber = Convert.ToInt32(TelephoneNumberTextBox.Text);
                         entityToEdit.WorkingHours = WorkingHoursTextBox.Text;
-                    
+
                         _dbContext.SaveChanges();
 
                         MessageBox.Show($"Данные {entityToEdit.FullName} успешно сохранены", "Сохранение изменений", MessageBoxButton.OK, MessageBoxImage.Information);
