@@ -165,7 +165,33 @@
     </Style>
     <!-- End: TextBox with PlaceHolder -->
 
-    <!-- Start: Button -->
-    
+    <!-- Start: RoundedButtonStyle -->
+    <Style x:Key="RoundedButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="#323B4B"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="#8A94A6"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                        CornerRadius="10">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#4B5D78"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="#4B5D78"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- End: RoundedButtonStyle -->
 
 </ResourceDictionary>
