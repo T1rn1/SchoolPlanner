@@ -167,11 +167,11 @@
 
     <!-- Start: RoundedButtonStyle -->
     <Style x:Key="RoundedButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="#323B4B"/>
+        <Setter Property="Background" Value="{StaticResource FourthIconColor}"/>
         <Setter Property="Height" Value="30"/>
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Foreground" Value="#8A94A6"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryBackgroundColor}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
