@@ -16,8 +16,8 @@ namespace SchoolPlanner.Pages
         private SchoolPlannerContext _dbContext;
 
         private SolidColorBrush PrimaryBackgroundColor;
-        private SolidColorBrush TextTertiaryColor;
         private Style placeholderTextBoxStyle;
+        private Style TextBlockStyle;
         private Style RoundedButtonStyle;
         private PathGeometry OpenPathGeometry;
         private PathGeometry BlockPathGeometry;
@@ -30,8 +30,8 @@ namespace SchoolPlanner.Pages
             _dbContext = context;
 
             PrimaryBackgroundColor = (SolidColorBrush)FindResource("PrimaryBackgroundColor");
-            TextTertiaryColor = (SolidColorBrush)FindResource("TextTertiaryColor");
             placeholderTextBoxStyle = (Style)FindResource("PlaceholderTextBoxStyle");
+            TextBlockStyle = (Style)FindResource("TextBlockStyle");
             RoundedButtonStyle = (Style)FindResource("RoundedButtonStyle");
             OpenPathGeometry = (PathGeometry)FindResource("open");
             BlockPathGeometry = (PathGeometry)FindResource("block");
@@ -55,27 +55,31 @@ namespace SchoolPlanner.Pages
                 CornerRadius = new CornerRadius(10),
                 Background = PrimaryBackgroundColor,
                 Child = ItemDockPanel,
+                Margin = new Thickness(10),
                 Padding = new Thickness(3)
             };
+            
             StackPanel LeftStackPanel = new StackPanel
             {
                 Orientation = Orientation.Horizontal,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Center,
             };
+            
             StackPanel innerStackPanel1 = new StackPanel
             {
                 Orientation = Orientation.Vertical,
                 Margin = new Thickness(10)
             };
+
             TextBlock FullNameTextBlock = new TextBlock
             {
                 Text = "ФИО",
-                Foreground = TextTertiaryColor,
-                FontSize = 15,
-                FontWeight = FontWeights.Bold,
+                Style = TextBlockStyle,
+                MinWidth = 100,
                 Margin = new Thickness(10),
             };
+
             TextBox FullNameTextBox = new TextBox
             {
                 Text = item.FullName,
@@ -97,9 +101,7 @@ namespace SchoolPlanner.Pages
             TextBlock TelephoneNumberTextBlock = new TextBlock
             {
                 Text = "Телефон",
-                Foreground = TextTertiaryColor,
-                FontWeight = FontWeights.Bold,
-                FontSize = 15,
+                Style = TextBlockStyle,
                 Margin = new Thickness(10),
             };
 
@@ -124,9 +126,7 @@ namespace SchoolPlanner.Pages
             TextBlock WorkingHoursTextBlock = new TextBlock
             {
                 Text = "Рабочее время",
-                Foreground = TextTertiaryColor,
-                FontWeight = FontWeights.Bold,
-                FontSize = 15,
+                Style = TextBlockStyle,
                 Margin = new Thickness(10),
             };
 
