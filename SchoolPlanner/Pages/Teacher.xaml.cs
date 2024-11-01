@@ -273,7 +273,14 @@ namespace SchoolPlanner.Pages
 
         private void AddNewTeacherBtn_Click(object sender, RoutedEventArgs e)
         {
-            
+            AddTeacher addTeacher = new AddTeacher(_dbContext);
+            addTeacher.Closed += AddTeacher_Closed;
+            addTeacher.ShowDialog();
+        }
+
+        private void AddTeacher_Closed(object? sender, EventArgs e)
+        {
+            FillStackPanel();
         }
     }
 }
