@@ -193,5 +193,59 @@
         </Setter>
     </Style>
     <!-- End: RoundedButtonStyle -->
+    
+    <!-- Start: TextBlock -->
+    <Style x:Key="TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource TextTertiaryColor}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="15"/>
+    </Style>
+    <!-- End: TextBlock -->
+
+    <Style x:Key="CustomScrollViewerStyle" TargetType="ScrollViewer">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollViewer">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" 
+                                                CanContentScroll="{TemplateBinding CanContentScroll}" 
+                                                CanHorizontallyScroll="False" 
+                                                CanVerticallyScroll="False"/>
+                        </Border>
+                        <ScrollBar x:Name="PART_VerticalScrollBar" 
+                               Grid.Row="0" 
+                               Grid.Column="1" 
+                               Orientation="Vertical" 
+                               Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" 
+                               ViewportSize="{TemplateBinding ViewportHeight}" 
+                               Maximum="{TemplateBinding ScrollableHeight}" 
+                               Value="{TemplateBinding VerticalOffset}" 
+                               Background="#FF999999"/>
+                        <ScrollBar x:Name="PART_HorizontalScrollBar" 
+                               Grid.Row="1" 
+                               Grid.Column="0" 
+                               Orientation="Horizontal" 
+                               Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" 
+                               ViewportSize="{TemplateBinding ViewportWidth}" 
+                               Maximum="{TemplateBinding ScrollableWidth}" 
+                               Value="{TemplateBinding HorizontalOffset}" 
+                               Background="#FF999999"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 
 </ResourceDictionary>
