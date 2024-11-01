@@ -144,6 +144,7 @@
                                    Padding="3,0"
                                    VerticalAlignment="Center"
                                    IsHitTestVisible="False"
+                                   Opacity="0.5"
                                    Text="{Binding ToolTip, RelativeSource={RelativeSource TemplatedParent}}"
                                    Visibility="Collapsed"/>
                         </Grid>
