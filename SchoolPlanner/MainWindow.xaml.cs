@@ -143,5 +143,25 @@ namespace SchoolPlanner
             Dashboard homePage = new Dashboard(dbContext);
             fContainer.Navigate(homePage);
         }
+
+        private void btnPass_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void btnPass_MouseLeave(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void btnHomework_MouseEnter(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void btnHomework_MouseLeave(object sender, MouseEventArgs e)
+        {
+
+        }
     }
 }
