@@ -87,6 +87,39 @@ namespace SchoolPlanner
                 Header.PopupText.Text = "Оценки";
             }
         }
+        private void btnPass_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (Tg_Btn.IsChecked == false)
+            {
+                Popup.PlacementTarget = btnPass;
+                Popup.Placement = PlacementMode.Right;
+                Popup.IsOpen = true;
+                Header.PopupText.Text = "Пропуски";
+            }
+        }
+
+        private void btnPass_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Popup.Visibility = Visibility.Collapsed;
+            Popup.IsOpen = false;
+        }
+
+        private void btnHomework_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (Tg_Btn.IsChecked == false)
+            {
+                Popup.PlacementTarget = btnHomework;
+                Popup.Placement = PlacementMode.Right;
+                Popup.IsOpen = true;
+                Header.PopupText.Text = "Домашнее задание";
+            }
+        }
+
+        private void btnHomework_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Popup.Visibility = Visibility.Collapsed;
+            Popup.IsOpen = false;
+        }
 
         private void btnProductStock_MouseLeave(object sender, MouseEventArgs e)
         {
@@ -144,24 +177,6 @@ namespace SchoolPlanner
             fContainer.Navigate(homePage);
         }
 
-        private void btnPass_MouseEnter(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void btnPass_MouseLeave(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void btnHomework_MouseEnter(object sender, MouseEventArgs e)
-        {
-
-        }
-
-        private void btnHomework_MouseLeave(object sender, MouseEventArgs e)
-        {
-
-        }
+        
     }
 }
