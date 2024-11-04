@@ -13,11 +13,11 @@ public partial class Schedule
 
     public int IdSubject { get; set; }
 
-    public int IdPass { get; set; }
+    public int? IdPass { get; set; }
 
     public int Class { get; set; }
 
-    public virtual Pass IdPassNavigation { get; set; } = null!;
+    public virtual Pass? IdPassNavigation { get; set; }
 
     public virtual Subject IdSubjectNavigation { get; set; } = null!;
 }

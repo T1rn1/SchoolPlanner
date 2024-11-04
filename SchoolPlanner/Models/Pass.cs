@@ -9,6 +9,10 @@ public partial class Pass
 
     public int IdReason { get; set; }
 
+    public DateOnly Date { get; set; }
+
+    public TimeOnly Time { get; set; }
+
     public string? Note { get; set; }
 
     public virtual Reason IdReasonNavigation { get; set; } = null!;

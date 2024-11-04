@@ -36,7 +36,7 @@ public partial class SchoolPlannerContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySql("server=localhost;database=SchoolPlanner;user=root;password=1905", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.39-mysql"));
+        => optionsBuilder.UseMySql("server=localhost;database=schoolplanner;user=root;password=1905", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.39-mysql"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -51,7 +51,7 @@ public partial class SchoolPlannerContext : DbContext
             entity.ToTable("cycliccommission");
 
             entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.Name).HasMaxLength(30);
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Grade>(entity =>
@@ -112,7 +112,7 @@ public partial class SchoolPlannerContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Type)
-                .HasMaxLength(15)
+                .HasMaxLength(25)
                 .HasColumnName("type");
         });
 
@@ -125,10 +125,14 @@ public partial class SchoolPlannerContext : DbContext
             entity.HasIndex(e => e.IdReason, "ID_reason");
 
             entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Date).HasColumnName("date");
             entity.Property(e => e.IdReason).HasColumnName("ID_reason");
             entity.Property(e => e.Note)
                 .HasColumnType("text")
                 .HasColumnName("note");
+            entity.Property(e => e.Time)
+                .HasColumnType("time")
+                .HasColumnName("time");
 
             entity.HasOne(d => d.IdReasonNavigation).WithMany(p => p.Passes)
                 .HasForeignKey(d => d.IdReason)
@@ -144,7 +148,7 @@ public partial class SchoolPlannerContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Name)
-                .HasMaxLength(15)
+                .HasMaxLength(35)
                 .HasColumnName("name");
         });
 
@@ -169,7 +173,6 @@ public partial class SchoolPlannerContext : DbContext
 
             entity.HasOne(d => d.IdPassNavigation).WithMany(p => p.Schedules)
                 .HasForeignKey(d => d.IdPass)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("schedule_ibfk_1");
 
             entity.HasOne(d => d.IdSubjectNavigation).WithMany(p => p.Schedules)
@@ -205,7 +208,7 @@ public partial class SchoolPlannerContext : DbContext
 
             entity.HasOne(d => d.IdTeacherNavigation).WithMany(p => p.Subjects)
                 .HasForeignKey(d => d.IdTeacher)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("subject_ibfk_2");
         });
 

@@ -9,7 +9,7 @@ public partial class Subject
 
     public string Name { get; set; } = null!;
 
-    public int IdTeacher { get; set; }
+    public int? IdTeacher { get; set; }
 
     public int IdCyclicCommission { get; set; }
 
@@ -21,7 +21,7 @@ public partial class Subject
 
     public virtual Cycliccommission IdCyclicCommissionNavigation { get; set; } = null!;
 
-    public virtual Teacher IdTeacherNavigation { get; set; } = null!;
+    public virtual Teacher? IdTeacherNavigation { get; set; }
 
     public virtual ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
 }
