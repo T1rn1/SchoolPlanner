@@ -13,29 +13,24 @@ namespace SchoolPlanner.Pages
     /// </summary>
     public partial class Teacher : Page
     {
-        private SchoolPlannerContext _dbContext;
+        private SchoolPlannerContext _dbContext= MainWindow.dbContext;
 
         private SolidColorBrush PrimaryBackgroundColor;
         private Style placeholderTextBoxStyle;
         private Style TextBlockStyle;
         private Style RoundedButtonStyle;
-        private PathGeometry OpenPathGeometry;
-        private PathGeometry BlockPathGeometry;
-        private PathGeometry SavePathGeometry;
+        private PathGeometry EditPathGeomerty;
         private PathGeometry DeletePathGeometry;
 
-        public Teacher(SchoolPlannerContext context)
+        public Teacher()
         {
             InitializeComponent();
-            _dbContext = context;
 
             PrimaryBackgroundColor = (SolidColorBrush)FindResource("PrimaryBackgroundColor");
             placeholderTextBoxStyle = (Style)FindResource("PlaceholderTextBoxStyle");
             TextBlockStyle = (Style)FindResource("TextBlockStyle");
             RoundedButtonStyle = (Style)FindResource("RoundedButtonStyle");
-            OpenPathGeometry = (PathGeometry)FindResource("open");
-            BlockPathGeometry = (PathGeometry)FindResource("block");
-            SavePathGeometry = (PathGeometry)FindResource("save");
+            EditPathGeomerty = (PathGeometry)FindResource("edit");
             DeletePathGeometry = (PathGeometry)FindResource("delete");
 
             FillStackPanel();
@@ -157,21 +152,9 @@ namespace SchoolPlanner.Pages
                 Margin = new Thickness(10)
             };
 
-            System.Windows.Shapes.Path OpenPath = new System.Windows.Shapes.Path
+            System.Windows.Shapes.Path EditPath = new System.Windows.Shapes.Path
             {
-                Data = OpenPathGeometry,
-                Fill = PrimaryBackgroundColor,
-                StrokeThickness = 1
-            };
-            System.Windows.Shapes.Path BlockPath = new System.Windows.Shapes.Path
-            {
-                Data = BlockPathGeometry,
-                Fill = PrimaryBackgroundColor,
-                StrokeThickness = 1
-            };
-            System.Windows.Shapes.Path SavePath = new System.Windows.Shapes.Path
-            {
-                Data = SavePathGeometry,
+                Data = EditPathGeomerty,
                 Fill = PrimaryBackgroundColor,
                 StrokeThickness = 1
             };
@@ -182,17 +165,9 @@ namespace SchoolPlanner.Pages
                 StrokeThickness = 1
             };
 
-            Button SaveChangesBtn = new Button
-            {
-                Content = SavePath,
-                Width = 50,
-                Style = RoundedButtonStyle,
-                Margin = new Thickness(5)
-            };
-
             Button EditBtn = new Button
             {
-                Content = BlockPath,
+                Content = EditPath,
                 Width = 50,
                 Style = RoundedButtonStyle,
                 Margin = new Thickness(5)
@@ -206,54 +181,34 @@ namespace SchoolPlanner.Pages
                 Margin = new Thickness(5)
             };
 
-            SaveChangesBtn.Click += (s, e) =>
-            {
-                Models.Teacher entityToEdit = _dbContext.Teachers.Find(ItemDockPanel.Tag);
-                if (_dbContext != null && entityToEdit != null)
-                {
-                    entityToEdit.FullName = FullNameTextBox.Text;
-                    entityToEdit.TelephoneNumber = Convert.ToInt32(TelephoneNumberTextBox.Text);
-                    entityToEdit.WorkingHours = WorkingHoursTextBox.Text;
-
-                    _dbContext.SaveChanges();
-
-                    MessageBox.Show($"Данные {entityToEdit.FullName} успешно сохранены", "Сохранение изменений", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    FillStackPanel();
-                }
-            };
-
             EditBtn.Click += (s, e) =>
             {
-                if (FullNameTextBox.IsReadOnly)
-                {
-                    EditBtn.Content = OpenPath;
-                    FullNameTextBox.IsReadOnly = false;
-                    TelephoneNumberTextBox.IsReadOnly = false;
-                    WorkingHoursTextBox.IsReadOnly = false;
-                }
-                else
-                {
-                    EditBtn.Content = BlockPath;
-                    FullNameTextBox.IsReadOnly = true;
-                    TelephoneNumberTextBox.IsReadOnly = true;
-                    WorkingHoursTextBox.IsReadOnly = true;
-                }
+
             };
 
             DeleteBtn.Click += (s, e) =>
             {
-                Models.Teacher entityToDelete = _dbContext.Teachers.Find(ItemDockPanel.Tag);
-                if (_dbContext != null && entityToDelete != null)
+                DeleteBtn.Click += (s, e) =>
                 {
-                    _dbContext.Teachers.Remove(entityToDelete);
-                    _dbContext.SaveChanges();
-                }
-                MessageBox.Show($"Данные {entityToDelete.FullName} успешно удален", "Удаление", MessageBoxButton.OK, MessageBoxImage.Information);
-                FillStackPanel();
+                    try
+                    {
+                        Models.Teacher entityToDelete = _dbContext.Teachers.Find(ItemDockPanel.Tag);
+                        if (_dbContext != null && entityToDelete != null)
+                        {
+                            _dbContext.Teachers.Remove(entityToDelete);
+                            _dbContext.SaveChanges();
+                            MessageBox.Show($"Данные {entityToDelete.FullName} успешно удален", "Удаление", MessageBoxButton.OK, MessageBoxImage.Information);
+                            FillStackPanel();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error: {ex.Message}\n\nInner Exception: {ex.InnerException?.Message}", "Ошибка сохранения", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                };
+
             };
 
-            RightStackPanel.Children.Add(SaveChangesBtn);
             RightStackPanel.Children.Add(EditBtn);
             RightStackPanel.Children.Add(DeleteBtn);
             ItemDockPanel.Children.Add(RightStackPanel);
@@ -273,7 +228,7 @@ namespace SchoolPlanner.Pages
 
         private void AddNewTeacherBtn_Click(object sender, RoutedEventArgs e)
         {
-            AddTeacher addTeacher = new AddTeacher(_dbContext);
+            AddEditTeacher addTeacher = new AddEditTeacher(_dbContext);
             addTeacher.Closed += AddTeacher_Closed;
             addTeacher.ShowDialog();
         }
