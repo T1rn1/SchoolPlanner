@@ -1,4 +1,4 @@
-﻿<Window x:Class="SchoolPlanner.Pages.AddTeacher"
+﻿<Window x:Class="SchoolPlanner.Pages.AddEditTeacher"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -15,12 +15,12 @@
         <StackPanel x:Name="MainStackPanel" Orientation="Vertical">
             <TextBlock Text="Добавить нового преподавателя" Style="{StaticResource TextBlockStyle}" FontSize="30" HorizontalAlignment="Center" Margin="20"/>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                <TextBox x:Name="FullName" ToolTip="ФИО" Style="{StaticResource PlaceholderTextBoxStyle}" Margin="10"/>
-                <TextBox x:Name="TelephoneNumber" ToolTip="Номер телефона" Style="{StaticResource PlaceholderTextBoxStyle}" Margin="10"/>
-                <TextBox x:Name="WorkingHours" ToolTip="Рабочее время" Style="{StaticResource PlaceholderTextBoxStyle}" Margin="10"/>
+                <TextBox x:Name="FullNameTextBox" ToolTip="ФИО" Style="{StaticResource PlaceholderTextBoxStyle}" Margin="10"/>
+                <TextBox x:Name="TelephoneNumberTextBox" ToolTip="Номер телефона" Style="{StaticResource PlaceholderTextBoxStyle}" Margin="10"/>
+                <TextBox x:Name="WorkingHoursTextBox" ToolTip="Рабочее время" Style="{StaticResource PlaceholderTextBoxStyle}" Margin="10"/>
             </StackPanel>
             <StackPanel Margin="20">
-                <Button x:Name="AddNewTeacherBtn" Style="{StaticResource ResourceKey=RoundedButtonStyle}" Content="Добавить" Margin="0,0,0,10" Click="AddNewTeacherBtn_Click"/>
+                <Button x:Name="AddNewTeacherBtn" Style="{StaticResource ResourceKey=RoundedButtonStyle}" Content="Сохранить" Margin="0,0,0,10" Click="AddNewTeacherBtn_Click"/>
                 <Button x:Name="CloseBtn" Style="{StaticResource ResourceKey=RoundedButtonStyle}" Content="Отменить" Click="CloseBtn_Click"/>
             </StackPanel>
         </StackPanel>

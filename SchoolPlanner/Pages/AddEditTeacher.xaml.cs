@@ -19,13 +19,20 @@ namespace SchoolPlanner.Pages
     /// <summary>
     /// Логика взаимодействия для AddTeacher.xaml
     /// </summary>
-    public partial class AddTeacher : Window
+    public partial class AddEditTeacher : Window
     {
         private SchoolPlannerContext _dbContext;
-        public AddTeacher(SchoolPlannerContext context)
+
+        public AddEditTeacher(SchoolPlannerContext context, Models.Teacher teacher = null)
         {
             InitializeComponent();
             _dbContext = context;
+            /*_currentTeacher = teacher;
+            if (_currentTeacher != null)
+            {
+                // Если передан существующий преподаватель, заполняем поля
+                PopulateFields();
+            }*/
         }
 
         public static bool[] ValidateInput(Models.Teacher newTeacher)
