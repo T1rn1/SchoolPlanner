@@ -62,7 +62,7 @@ public partial class SchoolPlannerContext : DbContext
 
             entity.HasIndex(e => e.IdLessonType, "ID_lessonType");
 
-            entity.HasIndex(e => e.IdSubject, "ID_subject");
+            entity.HasIndex(e => e.IdSubject, "grade_ibfk_2");
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Date).HasColumnName("date");
@@ -77,7 +77,7 @@ public partial class SchoolPlannerContext : DbContext
 
             entity.HasOne(d => d.IdSubjectNavigation).WithMany(p => p.Grades)
                 .HasForeignKey(d => d.IdSubject)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("grade_ibfk_2");
         });
 
@@ -100,7 +100,7 @@ public partial class SchoolPlannerContext : DbContext
 
             entity.HasOne(d => d.IdSubjectNavigation).WithMany(p => p.Homeworks)
                 .HasForeignKey(d => d.IdSubject)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("homework_ibfk_1");
         });
 
@@ -158,9 +158,9 @@ public partial class SchoolPlannerContext : DbContext
 
             entity.ToTable("schedule");
 
-            entity.HasIndex(e => e.IdPass, "ID_pass");
-
             entity.HasIndex(e => e.IdSubject, "ID_subject");
+
+            entity.HasIndex(e => e.IdPass, "schedule_ibfk_1");
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.Class).HasColumnName("class");
@@ -173,11 +173,12 @@ public partial class SchoolPlannerContext : DbContext
 
             entity.HasOne(d => d.IdPassNavigation).WithMany(p => p.Schedules)
                 .HasForeignKey(d => d.IdPass)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("schedule_ibfk_1");
 
             entity.HasOne(d => d.IdSubjectNavigation).WithMany(p => p.Schedules)
                 .HasForeignKey(d => d.IdSubject)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("schedule_ibfk_2");
         });
 

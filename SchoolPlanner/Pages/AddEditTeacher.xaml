@@ -12,7 +12,7 @@
         Title="AddTeacher" Height="350" Width="600">
     
     <Border CornerRadius="5" Background="{DynamicResource SecundaryBackgroundColor}">
-        <StackPanel x:Name="MainStackPanel" Orientation="Vertical">
+        <!--<StackPanel x:Name="MainStackPanel" Orientation="Vertical">
             <TextBlock Text="Добавить нового преподавателя" Style="{StaticResource TextBlockStyle}" FontSize="30" HorizontalAlignment="Center" Margin="20"/>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center">
                 <TextBox x:Name="FullNameTextBox" ToolTip="ФИО" Style="{StaticResource PlaceholderTextBoxStyle}" Margin="10"/>
@@ -23,6 +23,6 @@
                 <Button x:Name="AddNewTeacherBtn" Style="{StaticResource ResourceKey=RoundedButtonStyle}" Content="Сохранить" Margin="0,0,0,10" Click="AddNewTeacherBtn_Click"/>
                 <Button x:Name="CloseBtn" Style="{StaticResource ResourceKey=RoundedButtonStyle}" Content="Отменить" Click="CloseBtn_Click"/>
             </StackPanel>
-        </StackPanel>
+        </StackPanel>-->
     </Border>
 </Window>

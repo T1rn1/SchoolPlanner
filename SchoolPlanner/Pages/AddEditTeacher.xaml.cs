@@ -1,4 +1,4 @@
-﻿using SchoolPlanner.Models;
+﻿using SchoolPlanner;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,30 +21,39 @@ namespace SchoolPlanner.Pages
     /// </summary>
     public partial class AddEditTeacher : Window
     {
-        private SchoolPlannerContext _dbContext;
+        /*private SchoolPlannerContext _dbContext = MainWindow.dbContext;
+        private Models.Teacher _currentTeacher;*/
 
-        public AddEditTeacher(SchoolPlannerContext context, Models.Teacher teacher = null)
+        /*public AddEditTeacher(Models.Teacher teacher = null)
         {
             InitializeComponent();
-            _dbContext = context;
-            /*_currentTeacher = teacher;
+            _currentTeacher = teacher;
             if (_currentTeacher != null)
             {
-                // Если передан существующий преподаватель, заполняем поля
                 PopulateFields();
-            }*/
+            }
+        }
+        private void PopulateFields()
+        {
+            FullNameTextBox.Text = _currentTeacher.FullName;
+            TelephoneNumberTextBox.Text = _currentTeacher.TelephoneNumber.ToString();
+            WorkingHoursTextBox.Text = _currentTeacher.WorkingHours;
         }
 
-        public static bool[] ValidateInput(Models.Teacher newTeacher)
+        public static (bool isValid, List<string> errors) ValidateInput(Models.Teacher newTeacher)
         {
-            bool[] arr = new bool[]
-            {
-                ValidateFullName(newTeacher.FullName),
-                ValidatePhoneNumber(newTeacher.TelephoneNumber.ToString()),
-                ValidateWorkingHours(newTeacher.WorkingHours)
-            };
+            var errors = new List<string>();
 
-            return arr;
+            if (!ValidateFullName(newTeacher.FullName.Trim()))
+                errors.Add("Поле ФИО должно содержать либо полное ФИО (фамилия, имя, отчество), либо имя и отчество.");
+
+            if (!ValidatePhoneNumber(newTeacher.TelephoneNumber.ToString().Trim()))
+                errors.Add("Телефонный номер должен содержать 9 цифр.");
+
+            if (!ValidateWorkingHours(newTeacher.WorkingHours.Trim()))
+                errors.Add("Рабочие часы должны быть в формате HH:mm-HH:mm.");
+
+            return (errors.Count == 0, errors);
         }
 
         private static bool ValidateFullName(string fullName)
@@ -52,14 +61,14 @@ namespace SchoolPlanner.Pages
             if (string.IsNullOrWhiteSpace(fullName))
                 return false;
 
-            string fullNamePattern = @"^[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+$";
+            string fullNamePattern = @"^([А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+|[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+)$";
             return Regex.IsMatch(fullName, fullNamePattern);
         }
 
         private static bool ValidatePhoneNumber(string phoneNumber)
         {
             if (string.IsNullOrWhiteSpace(phoneNumber))
-                return false;
+                return true;
 
             string phoneNumberPattern = @"^\d{9}$";
             return Regex.IsMatch(phoneNumber, phoneNumberPattern);
@@ -68,37 +77,51 @@ namespace SchoolPlanner.Pages
         private static bool ValidateWorkingHours(string workingHours)
         {
             if (string.IsNullOrWhiteSpace(workingHours))
-                return false;
+                return true;
 
-            string workingHoursPattern = @"^\d{2}\.\d{2}-\d{2}\.\d{2}$";
+            string workingHoursPattern = @"^(0[0-9]|1[0-9]|2[0-3])([:.])[0-5][0-9]-((0[0-9]|1[0-9]|2[0-3])([:.])[0-5][0-9])$";
             return Regex.IsMatch(workingHours, workingHoursPattern);
         }
 
         private void AddNewTeacherBtn_Click(object sender, RoutedEventArgs e)
         {
-            Models.Teacher newTeacher = new Models.Teacher();
-
-            var validationResults = ValidateInput(newTeacher);
-            if (validationResults.Contains(false))
+            Models.Teacher newTeacher = new Models.Teacher
             {
-                var errorMessage = "Ошибки в полях:\n";
-                if (!validationResults[0]) errorMessage += "- ФИО\n";
-                if (!validationResults[1]) errorMessage += "- Телефон\n";
-                if (!validationResults[2]) errorMessage += "- Рабочее время\n";
+                FullName = FullNameTextBox.Text,
+                TelephoneNumber = string.IsNullOrWhiteSpace(TelephoneNumberTextBox.Text) ? (int?)null : Convert.ToInt32(TelephoneNumberTextBox.Text),
+                WorkingHours = WorkingHoursTextBox.Text,
+            };
 
+            var(isValid, errors) = ValidateInput(newTeacher);
+
+            if (!isValid)
+            {
+                var errorMessage = "Ошибки в полях:\n" + string.Join("\n", errors);
                 MessageBox.Show(errorMessage, "Сохранение изменений", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
-                _dbContext.Teachers.Add(newTeacher);
-                _dbContext.SaveChanges();
-                Close();
-            }
+                if(_currentTeacher != null)
+                {
+                    _currentTeacher.FullName = newTeacher.FullName;
+                    _currentTeacher.TelephoneNumber = newTeacher.TelephoneNumber;
+                    _currentTeacher.WorkingHours = newTeacher.WorkingHours;
+                    _dbContext.SaveChanges();
+                    MessageBox.Show("Данные учителя успешно обновлены.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Close();
+                }
+                else
+                {
+                    _dbContext.Teachers.Add(newTeacher);
+                    _dbContext.SaveChanges();
+                    Close();
+                } 
+            }           
         }
 
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
+        }*/
     }
 }

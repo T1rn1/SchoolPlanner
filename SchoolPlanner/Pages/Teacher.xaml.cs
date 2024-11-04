@@ -1,4 +1,4 @@
-﻿using SchoolPlanner.Models;
+﻿using SchoolPlanner;
 using System.DirectoryServices;
 using System.IO;
 using System.Windows;
@@ -13,7 +13,7 @@ namespace SchoolPlanner.Pages
     /// </summary>
     public partial class Teacher : Page
     {
-        private SchoolPlannerContext _dbContext= MainWindow.dbContext;
+        //private SchoolPlannerContext _dbContext= MainWindow.dbContext;
 
         private SolidColorBrush PrimaryBackgroundColor;
         private Style placeholderTextBoxStyle;
@@ -33,10 +33,10 @@ namespace SchoolPlanner.Pages
             EditPathGeomerty = (PathGeometry)FindResource("edit");
             DeletePathGeometry = (PathGeometry)FindResource("delete");
 
-            FillStackPanel();
+            //FillStackPanel();
         }
 
-        public void CreateStackPanel(Models.Teacher item)
+        /*public void CreateStackPanel(Models.Teacher item)
         {
             DockPanel ItemDockPanel = new DockPanel
             {
@@ -183,30 +183,28 @@ namespace SchoolPlanner.Pages
 
             EditBtn.Click += (s, e) =>
             {
-
+                Models.Teacher entityToEdit = _dbContext.Teachers.Find(ItemDockPanel.Tag);
+                if (entityToEdit != null)
+                {
+                    AddEditTeacher addEditTeacher = new AddEditTeacher(entityToEdit);
+                    addEditTeacher.Closed += AddTeacher_Closed;
+                    addEditTeacher.ShowDialog();
+                }
             };
 
             DeleteBtn.Click += (s, e) =>
             {
                 DeleteBtn.Click += (s, e) =>
                 {
-                    try
+                    Models.Teacher entityToDelete = _dbContext.Teachers.Find(ItemDockPanel.Tag);
+                    if (_dbContext != null && entityToDelete != null)
                     {
-                        Models.Teacher entityToDelete = _dbContext.Teachers.Find(ItemDockPanel.Tag);
-                        if (_dbContext != null && entityToDelete != null)
-                        {
-                            _dbContext.Teachers.Remove(entityToDelete);
-                            _dbContext.SaveChanges();
-                            MessageBox.Show($"Данные {entityToDelete.FullName} успешно удален", "Удаление", MessageBoxButton.OK, MessageBoxImage.Information);
-                            FillStackPanel();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Error: {ex.Message}\n\nInner Exception: {ex.InnerException?.Message}", "Ошибка сохранения", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                        _dbContext.Teachers.Remove(entityToDelete);
+                        _dbContext.SaveChanges();
+                        MessageBox.Show($"Данные {entityToDelete.FullName} успешно удален", "Удаление", MessageBoxButton.OK, MessageBoxImage.Information);
+                        FillStackPanel();
+                    }   
                 };
-
             };
 
             RightStackPanel.Children.Add(EditBtn);
@@ -228,7 +226,7 @@ namespace SchoolPlanner.Pages
 
         private void AddNewTeacherBtn_Click(object sender, RoutedEventArgs e)
         {
-            AddEditTeacher addTeacher = new AddEditTeacher(_dbContext);
+            AddEditTeacher addTeacher = new AddEditTeacher();
             addTeacher.Closed += AddTeacher_Closed;
             addTeacher.ShowDialog();
         }
@@ -236,6 +234,6 @@ namespace SchoolPlanner.Pages
         private void AddTeacher_Closed(object? sender, EventArgs e)
         {
             FillStackPanel();
-        }
+        }*/
     }
 }

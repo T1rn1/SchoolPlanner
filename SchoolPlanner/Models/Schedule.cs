@@ -11,7 +11,7 @@ public partial class Schedule
 
     public DateOnly Date { get; set; }
 
-    public int IdSubject { get; set; }
+    public int? IdSubject { get; set; }
 
     public int? IdPass { get; set; }
 
@@ -19,5 +19,5 @@ public partial class Schedule
 
     public virtual Pass? IdPassNavigation { get; set; }
 
-    public virtual Subject IdSubjectNavigation { get; set; } = null!;
+    public virtual Subject? IdSubjectNavigation { get; set; }
 }

@@ -10,10 +10,10 @@
 
     <Border CornerRadius="5" Background="{DynamicResource SecundaryBackgroundColor}">
         <Grid x:Name="MainGrid">
-            <Button x:Name="AddNewTeacherBtn" Style="{DynamicResource RoundedButtonStyle}" VerticalAlignment="Top" Margin="10" Content="Добавить преподавателя" Click="AddNewTeacherBtn_Click"/>
+            <!--<Button x:Name="AddNewTeacherBtn" Style="{DynamicResource RoundedButtonStyle}" VerticalAlignment="Top" Margin="10" Content="Добавить преподавателя" Click="AddNewTeacherBtn_Click"/>
             <ScrollViewer Style="{StaticResource FavsScrollViewer}" VerticalScrollBarVisibility="Auto" Margin="10,55">
                 <StackPanel x:Name="MainStackPanel" Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
-            </ScrollViewer>
+            </ScrollViewer>-->
         </Grid>
     </Border>
 </Page>

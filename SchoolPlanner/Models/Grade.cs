@@ -11,11 +11,11 @@ public partial class Grade
 
     public DateOnly Date { get; set; }
 
-    public int IdSubject { get; set; }
+    public int? IdSubject { get; set; }
 
     public int IdLessonType { get; set; }
 
     public virtual Lessontype IdLessonTypeNavigation { get; set; } = null!;
 
-    public virtual Subject IdSubjectNavigation { get; set; } = null!;
+    public virtual Subject? IdSubjectNavigation { get; set; }
 }
