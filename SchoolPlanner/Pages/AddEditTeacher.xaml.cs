@@ -1,4 +1,4 @@
-﻿using SchoolPlanner;
+﻿using SchoolPlanner.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +21,10 @@ namespace SchoolPlanner.Pages
     /// </summary>
     public partial class AddEditTeacher : Window
     {
-        /*private SchoolPlannerContext _dbContext = MainWindow.dbContext;
-        private Models.Teacher _currentTeacher;*/
+        private SchoolPlannerContext _dbContext = MainWindow.dbContext;
+        private Models.Teacher _currentTeacher;
 
-        /*public AddEditTeacher(Models.Teacher teacher = null)
+        public AddEditTeacher(Models.Teacher teacher = null)
         {
             InitializeComponent();
             _currentTeacher = teacher;
@@ -122,6 +122,6 @@ namespace SchoolPlanner.Pages
         private void CloseBtn_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }*/
+        }
     }
 }

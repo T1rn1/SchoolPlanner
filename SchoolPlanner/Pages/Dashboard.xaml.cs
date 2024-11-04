@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SchoolPlanner;
+using SchoolPlanner.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace SchoolPlanner.Pages
     /// </summary>
     public partial class Dashboard : Page
     {
-        //private SchoolPlannerContext _dbContext = MainWindow.dbContext;
+        private SchoolPlannerContext _dbContext = MainWindow.dbContext;
 
         private List<(TimeOnly, TimeOnly)> timeSlots;
         private DateOnly _currentWeekStart;
@@ -30,7 +31,7 @@ namespace SchoolPlanner.Pages
         {
             InitializeComponent();
             InitializeTimeSlots();
-            //LoadSchedule();
+            LoadSchedule();
         }
 
         private void InitializeTimeSlots()
@@ -47,7 +48,7 @@ namespace SchoolPlanner.Pages
             };
         }
 
-        /*private void LoadSchedule()
+        private void LoadSchedule()
         {
             var scheduleData = _dbContext.Schedules
                 .Include(s => s.IdSubjectNavigation)
@@ -163,6 +164,6 @@ namespace SchoolPlanner.Pages
             }
 
             return weekDates;
-        }*/
+        }
     }
 }

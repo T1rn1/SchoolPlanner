@@ -1,4 +1,4 @@
-﻿using SchoolPlanner;
+﻿using SchoolPlanner.Models;
 using System.DirectoryServices;
 using System.IO;
 using System.Windows;
@@ -13,7 +13,7 @@ namespace SchoolPlanner.Pages
     /// </summary>
     public partial class Teacher : Page
     {
-        //private SchoolPlannerContext _dbContext= MainWindow.dbContext;
+        private SchoolPlannerContext _dbContext= MainWindow.dbContext;
 
         private SolidColorBrush PrimaryBackgroundColor;
         private Style placeholderTextBoxStyle;
@@ -33,10 +33,10 @@ namespace SchoolPlanner.Pages
             EditPathGeomerty = (PathGeometry)FindResource("edit");
             DeletePathGeometry = (PathGeometry)FindResource("delete");
 
-            //FillStackPanel();
+            FillStackPanel();
         }
 
-        /*public void CreateStackPanel(Models.Teacher item)
+        public void CreateStackPanel(Models.Teacher item)
         {
             DockPanel ItemDockPanel = new DockPanel
             {
@@ -234,6 +234,6 @@ namespace SchoolPlanner.Pages
         private void AddTeacher_Closed(object? sender, EventArgs e)
         {
             FillStackPanel();
-        }*/
+        }
     }
 }

@@ -10,11 +10,11 @@
 
     <Border CornerRadius="5" Background="{DynamicResource SecundaryBackgroundColor}">
         <StackPanel Orientation="Vertical">
-            <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button x:Name="PreviousWeekButton" Content="Previous Week" Click="PreviousWeekButton_Click" Margin="5"/>
                 <Button x:Name="NextWeekButton" Content="Next Week" Click="NextWeekButton_Click" Margin="5"/>
             </StackPanel>
-            <Grid x:Name="scheduleGrid" />-->
+            <Grid x:Name="scheduleGrid" />
         </StackPanel>
     </Border>
 </Page>

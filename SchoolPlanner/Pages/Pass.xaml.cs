@@ -1,4 +1,5 @@
 ﻿using SchoolPlanner;
+using SchoolPlanner.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace SchoolPlanner.Pages
     /// </summary>
     public partial class Pass : Page
     {
-        //private SchoolPlannerContext _dbContext = MainWindow.dbContext;
+        private SchoolPlannerContext _dbContext = MainWindow.dbContext;
         public Pass()
         {
             InitializeComponent();
