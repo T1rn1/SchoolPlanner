@@ -11,7 +11,7 @@
         Background="Transparent" AllowsTransparency="True"
         ResizeMode="NoResize" FontFamily="Poppins"
         Icon="pack://application:,,,/Resources/Icon1.png">
-
+    
     <Border Background="{DynamicResource PrimaryBackgroundColor}"
             CornerRadius="8">
         <Grid>
@@ -56,20 +56,20 @@
                         <Button x:Name="btnDashboard" Style="{DynamicResource PopupButtonStyle}"  MouseEnter="btnDashboard_MouseEnter" MouseLeave="btnDashboard_MouseLeave" Click="btnDashboard_Click">
                             <ctls:MenuItem GroupName="MenuItem" IndicatorBrush="{DynamicResource PrimaryBlueColor}" Icon="{DynamicResource dashboard}" IconWidth="16" Text="Расписание" VerticalAlignment="Center"/>
                         </Button>
-                        <Button x:Name="btnProducts" Style="{DynamicResource PopupButtonStyle}"  MouseEnter="btnProducts_MouseEnter" MouseLeave="btnProducts_MouseLeave">
+                        <Button x:Name="btnProducts" Style="{DynamicResource PopupButtonStyle}"  MouseEnter="btnProducts_MouseEnter" MouseLeave="btnProducts_MouseLeave" Click="btnProducts_Click">
                             <ctls:MenuItem GroupName="MenuItem" IndicatorBrush="{DynamicResource PrimaryBlueColor}" Icon="{DynamicResource subjects}" IconWidth="16" Text="Предметы" VerticalAlignment="Center"/>
                         </Button>
-                        <Button x:Name="btnProductStock" Style="{DynamicResource PopupButtonStyle}"  MouseEnter="btnProductStock_MouseEnter" MouseLeave="btnProductStock_MouseLeave">
+                        <Button x:Name="btnProductStock" Style="{DynamicResource PopupButtonStyle}"  MouseEnter="btnProductStock_MouseEnter" MouseLeave="btnProductStock_MouseLeave" Click="btnProductStock_Click">
                             <ctls:MenuItem GroupName="MenuItem" IndicatorBrush="{DynamicResource PrimaryBlueColor}" Icon="{DynamicResource grades}" IconWidth="16" Text="Оценки" VerticalAlignment="Center"/>
                         </Button>
-                        <Button x:Name="btnPass" Style="{DynamicResource PopupButtonStyle}"  MouseEnter="btnPass_MouseEnter" MouseLeave="btnPass_MouseLeave">
+                        <Button x:Name="btnPass" Style="{DynamicResource PopupButtonStyle}"  MouseEnter="btnPass_MouseEnter" MouseLeave="btnPass_MouseLeave" Click="btnPass_Click">
                             <ctls:MenuItem GroupName="MenuItem" IndicatorBrush="{DynamicResource PrimaryBlueColor}" Icon="{DynamicResource pass}" IconWidth="16" Text="Пропуски" VerticalAlignment="Center"/>
                         </Button>
-                        <Button x:Name="btnHomework" Style="{DynamicResource PopupButtonStyle}"  MouseEnter="btnHomework_MouseEnter" MouseLeave="btnHomework_MouseLeave">
+                        <Button x:Name="btnHomework" Style="{DynamicResource PopupButtonStyle}"  MouseEnter="btnHomework_MouseEnter" MouseLeave="btnHomework_MouseLeave" Click="btnHomework_Click">
                             <ctls:MenuItem GroupName="MenuItem" IndicatorBrush="{DynamicResource PrimaryBlueColor}" Icon="{DynamicResource homework}" IconWidth="16" Text="Домашнее задание" VerticalAlignment="Center"/>
                         </Button>
 
-                        <Button x:Name="btnSetting" Style="{DynamicResource PopupButtonStyle}"  MouseEnter="btnSetting_MouseEnter" MouseLeave="btnSetting_MouseLeave">
+                        <Button x:Name="btnSetting" Style="{DynamicResource PopupButtonStyle}"  MouseEnter="btnSetting_MouseEnter" MouseLeave="btnSetting_MouseLeave" Click="btnSetting_Click">
                             <ctls:MenuItem GroupName="MenuItem" IndicatorBrush="{DynamicResource PrimaryBlueColor}" Icon="{DynamicResource settings}" IconWidth="16" Text="Настройки" VerticalAlignment="Center"/>
                         </Button>
                     </StackPanel>
