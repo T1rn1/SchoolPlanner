@@ -12,7 +12,7 @@ namespace SchoolPlanner
     /// </summary>
     public partial class MainWindow : Window
     {
-        private SchoolPlannerContext dbContext;
+        public static SchoolPlannerContext dbContext;
         public MainWindow()
         {
             InitializeComponent();
@@ -167,16 +167,39 @@ namespace SchoolPlanner
 
         private void btnTeacher_Click(object sender, RoutedEventArgs e)
         {
-            Pages.Teacher homePage = new Pages.Teacher(dbContext);
+            Pages.Teacher homePage = new Pages.Teacher();
             fContainer.Navigate(homePage);
         }
 
         private void btnDashboard_Click(object sender, RoutedEventArgs e)
         {
-            Dashboard homePage = new Dashboard(dbContext);
+            Dashboard homePage = new Dashboard();
             fContainer.Navigate(homePage);
         }
 
-        
+        private void btnProducts_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnProductStock_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void btnPass_Click(object sender, RoutedEventArgs e)
+        {
+            Pages.Pass homePage = new Pages.Pass();
+            fContainer.Navigate(homePage);
+        }
+
+        private void btnHomework_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnSetting_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
