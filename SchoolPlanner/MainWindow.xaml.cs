@@ -179,7 +179,8 @@ namespace SchoolPlanner
 
         private void btnProducts_Click(object sender, RoutedEventArgs e)
         {
-
+            Pages.Subject homePage = new Pages.Subject();
+            fContainer.Navigate(homePage);
         }
 
         private void btnProductStock_Click(object sender, RoutedEventArgs e)
