@@ -14,8 +14,8 @@
         Title="AddSubject" 
         Height="350" 
         Width="600">
-    
-    <Border CornerRadius="5" Background="{DynamicResource SecundaryBackgroundColor}">
+
+    <Border CornerRadius="10" BorderBrush="{StaticResource PrimaryBackgroundColor}" BorderThickness="1" Background="{DynamicResource SecundaryBackgroundColor}">
         <StackPanel x:Name="MainStackPanel" Orientation="Vertical">
             <TextBlock Text="Добавить нового преподавателя" Style="{StaticResource TextBlockStyle}" FontSize="30" HorizontalAlignment="Center" Margin="20"/>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center">
