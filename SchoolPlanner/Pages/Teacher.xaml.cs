@@ -71,7 +71,6 @@ namespace SchoolPlanner.Pages
             {
                 Text = "ФИО",
                 Style = TextBlockStyle,
-                MinWidth = 100,
                 Margin = new Thickness(10),
             };
 
@@ -81,7 +80,8 @@ namespace SchoolPlanner.Pages
                 Margin = new Thickness(10),
                 Style = placeholderTextBoxStyle,
                 IsReadOnly = true,
-                MaxWidth = 250,
+                MinWidth = 150,
+                MaxWidth = 350,
             };
 
             innerStackPanel1.Children.Add(FullNameTextBlock);
@@ -102,7 +102,7 @@ namespace SchoolPlanner.Pages
 
             TextBox TelephoneNumberTextBox = new TextBox
             {
-                Text = item.TelephoneNumber.ToString(),
+                Text = item.TelephoneNumber?.ToString() ?? "не задано",
                 Margin = new Thickness(10),
                 Style = placeholderTextBoxStyle,
                 IsReadOnly = true,
@@ -127,7 +127,7 @@ namespace SchoolPlanner.Pages
 
             TextBox WorkingHoursTextBox = new TextBox
             {
-                Text = item.WorkingHours,
+                Text = item.WorkingHours ?? "не задано",
                 Margin = new Thickness(10),
                 Style = placeholderTextBoxStyle,
                 IsReadOnly = true,
