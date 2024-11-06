@@ -204,13 +204,13 @@ namespace SchoolPlanner.Pages
 
             EditBtn.Click += (s, e) =>
             {
-                /*Models.Subject entityToEdit = _dbContext.Subjects.Find(ItemDockPanel.Tag);
+                Models.Subject entityToEdit = _dbContext.Subjects.Find(ItemDockPanel.Tag);
                 if (entityToEdit != null)
                 {
                     AddEditSubject addEditSubject = new AddEditSubject(entityToEdit);
                     addEditSubject.Closed += AddSubject_Closed;
                     addEditSubject.ShowDialog();
-                }*/
+                }
             };
 
             DeleteBtn.Click += (s, e) =>
