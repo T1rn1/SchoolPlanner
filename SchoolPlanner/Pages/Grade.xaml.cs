@@ -3,24 +3,13 @@ using SchoolPlanner.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SchoolPlanner.Pages
 {
-    /// <summary>
-    /// Логика взаимодействия для Subject.xaml
-    /// </summary>
-    public partial class Subject : Page
+    public partial class Grade : Page
     {
         private SchoolPlannerContext _dbContext = MainWindow.dbContext;
 
@@ -30,9 +19,8 @@ namespace SchoolPlanner.Pages
         private Style RoundedButtonStyle;
         private PathGeometry EditPathGeomerty;
         private PathGeometry DeletePathGeometry;
-        private PathGeometry NotePathGeometry;
 
-        public Subject()
+        public Grade()
         {
             InitializeComponent();
 
@@ -42,18 +30,17 @@ namespace SchoolPlanner.Pages
             RoundedButtonStyle = (Style)FindResource("RoundedButtonStyle");
             EditPathGeomerty = (PathGeometry)FindResource("edit");
             DeletePathGeometry = (PathGeometry)FindResource("delete");
-            NotePathGeometry = (PathGeometry)FindResource("note");
 
             FillStackPanel();
         }
 
-        public void CreateStackPanel(Models.Subject item)
+        public void CreateStackPanel(Models.Grade grade)
         {
             DockPanel ItemDockPanel = new DockPanel
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Center,
-                Tag = item.Id,
+                Tag = grade.Id,
             };
 
             Border border = new Border
@@ -78,69 +65,22 @@ namespace SchoolPlanner.Pages
                 Margin = new Thickness(10)
             };
 
-            TextBlock SubjectNameTextBlock = new TextBlock
+            TextBlock GradeTextBlock = new TextBlock
             {
-                Text = "Название предмета",
+                Text = "Оценка",
                 Style = TextBlockStyle,
                 Margin = new Thickness(10),
             };
 
-            TextBox SubjectNameTextBox = new TextBox
+            TextBox GradeTextBox = new TextBox
             {
-                Text = item.Name,
+                Text = grade.Grade1.ToString(),
                 Margin = new Thickness(10),
                 Style = placeholderTextBoxStyle,
                 IsReadOnly = true,
-                MinWidth = 150,
-                MaxWidth = 250,
+                MinWidth = 50,
+                MaxWidth = 100,
             };
-
-            var teacherFullName = _dbContext.Teachers
-                            .Where(t => t.Id == item.IdTeacher)
-                            .Select(t => t.FullName)
-                            .FirstOrDefault() ?? "не задано";
-
-            TextBlock TeacherNameTextBlock = new TextBlock
-            {
-                Text = "Преподаватель",
-                Style = TextBlockStyle,
-                Margin = new Thickness(10),
-            };
-
-            TextBox TeacherNameTextBox = new TextBox
-            {
-                Text = teacherFullName,
-                Margin = new Thickness(10),
-                Style = placeholderTextBoxStyle,
-                IsReadOnly = true,
-                MinWidth = 150,
-                MaxWidth = 200,
-            };
-
-            var cyclicCommissionName = _dbContext.Cycliccommissions
-                            .Where(t => t.Id == item.IdCyclicCommission)
-                            .Select(t => t.Name)
-                            .FirstOrDefault() ?? "не задано";
-
-            TextBlock CyclicCommissionTextBlock = new TextBlock
-            {
-                Text = "Цикловая комиссия",
-                Style = TextBlockStyle,
-                Margin = new Thickness(10),
-            };
-
-            TextBox CyclicCommissionTextBox = new TextBox
-            {
-                Text = cyclicCommissionName,
-                Margin = new Thickness(10),
-                Style = placeholderTextBoxStyle,
-                IsReadOnly = true,
-                MinWidth = 150,
-                MaxWidth = 200,
-            };
-
-            innerStackPanel1.Children.Add(SubjectNameTextBlock);
-            innerStackPanel1.Children.Add(SubjectNameTextBox);
 
             StackPanel innerStackPanel2 = new StackPanel
             {
@@ -148,8 +88,22 @@ namespace SchoolPlanner.Pages
                 Margin = new Thickness(10)
             };
 
-            innerStackPanel2.Children.Add(TeacherNameTextBlock);
-            innerStackPanel2.Children.Add(TeacherNameTextBox);
+            TextBlock DateTextBlock = new TextBlock
+            {
+                Text = "Дата",
+                Style = TextBlockStyle,
+                Margin = new Thickness(10),
+            };
+
+            TextBox DateTextBox = new TextBox
+            {
+                Text = grade.Date.ToString(),
+                Margin = new Thickness(10),
+                Style = placeholderTextBoxStyle,
+                IsReadOnly = true,
+                MinWidth = 100,
+                MaxWidth = 150,
+            };
 
             StackPanel innerStackPanel3 = new StackPanel
             {
@@ -157,12 +111,59 @@ namespace SchoolPlanner.Pages
                 Margin = new Thickness(10)
             };
 
-            innerStackPanel3.Children.Add(CyclicCommissionTextBlock);
-            innerStackPanel3.Children.Add(CyclicCommissionTextBox);
+            TextBlock SubjectTextBlock = new TextBlock
+            {
+                Text = "Предмет",
+                Style = TextBlockStyle,
+                Margin = new Thickness(10),
+            };
+
+            TextBox SubjectTextBox = new TextBox
+            {
+                Text = grade.IdSubjectNavigation?.Name ?? "не задано",
+                Margin = new Thickness(10),
+                Style = placeholderTextBoxStyle,
+                IsReadOnly = true,
+                MinWidth = 100,
+                MaxWidth = 150,
+            };
+
+            StackPanel innerStackPanel4 = new StackPanel
+            {
+                Orientation = Orientation.Vertical,
+                Margin = new Thickness(10)
+            };
+
+            TextBlock LessonTypeTextBlock = new TextBlock
+            {
+                Text = "Тип урока",
+                Style = TextBlockStyle,
+                Margin = new Thickness(10),
+            };
+
+            TextBox LessonTypeTextBox = new TextBox
+            {
+                Text = grade.IdLessonTypeNavigation.Type,
+                Margin = new Thickness(10),
+                Style = placeholderTextBoxStyle,
+                IsReadOnly = true,
+                MinWidth = 100,
+                MaxWidth = 150,
+            };
+
+            innerStackPanel1.Children.Add(GradeTextBlock);
+            innerStackPanel1.Children.Add(GradeTextBox);
+            innerStackPanel2.Children.Add(DateTextBlock);
+            innerStackPanel2.Children.Add(DateTextBox);
+            innerStackPanel3.Children.Add(SubjectTextBlock);
+            innerStackPanel3.Children.Add(SubjectTextBox);
+            innerStackPanel4.Children.Add(LessonTypeTextBlock);
+            innerStackPanel4.Children.Add(LessonTypeTextBox);
 
             LeftStackPanel.Children.Add(innerStackPanel1);
             LeftStackPanel.Children.Add(innerStackPanel2);
             LeftStackPanel.Children.Add(innerStackPanel3);
+            LeftStackPanel.Children.Add(innerStackPanel4);
 
             ItemDockPanel.Children.Add(LeftStackPanel);
 
@@ -171,7 +172,6 @@ namespace SchoolPlanner.Pages
                 Orientation = Orientation.Horizontal,
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Center,
-
                 Margin = new Thickness(10)
             };
 
@@ -184,12 +184,6 @@ namespace SchoolPlanner.Pages
             System.Windows.Shapes.Path DeletePath = new System.Windows.Shapes.Path
             {
                 Data = DeletePathGeometry,
-                Fill = PrimaryBackgroundColor,
-                StrokeThickness = 1
-            };
-            System.Windows.Shapes.Path NotePath = new System.Windows.Shapes.Path
-            {
-                Data = NotePathGeometry,
                 Fill = PrimaryBackgroundColor,
                 StrokeThickness = 1
             };
@@ -210,68 +204,57 @@ namespace SchoolPlanner.Pages
                 Margin = new Thickness(5)
             };
 
-            Button NoteBtn = new Button
-            {
-                Content = NotePath,
-                Width = 50,
-                Style = RoundedButtonStyle,
-                Margin = new Thickness(5),
-                ToolTip = new ToolTip
-                {
-                    Content = item.Note,
-                    Style = (Style)FindResource("RoundedToolTipStyle")
-                }
-            };
-
             EditBtn.Click += (s, e) =>
             {
-                Models.Subject entityToEdit = _dbContext.Subjects.Find(ItemDockPanel.Tag);
+                SchoolPlanner.Models.Grade entityToEdit = _dbContext.Grades.Find(ItemDockPanel.Tag);
                 if (entityToEdit != null)
                 {
-                    AddEditSubject addEditSubject = new AddEditSubject(entityToEdit);
-                    addEditSubject.Closed += AddSubject_Closed;
-                    addEditSubject.ShowDialog();
+                    AddEditGrade addEditGrade = new AddEditGrade(entityToEdit);
+                    addEditGrade.Closed += AddGrade_Closed;
+                    addEditGrade.ShowDialog();
                 }
             };
 
             DeleteBtn.Click += (s, e) =>
             {
-                Models.Subject entityToDelete = _dbContext.Subjects.Find(ItemDockPanel.Tag);
+                SchoolPlanner.Models.Grade entityToDelete = _dbContext.Grades.Find(ItemDockPanel.Tag);
                 if (_dbContext != null && entityToDelete != null)
                 {
-                    _dbContext.Subjects.Remove(entityToDelete);
+                    _dbContext.Grades.Remove(entityToDelete);
                     _dbContext.SaveChanges();
-                    MessageBox.Show($"Данные {entityToDelete.Name} успешно удалены", "Удаление", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show($"Оценка {entityToDelete.Grade1} успешно удалена", "Удаление", MessageBoxButton.OK, MessageBoxImage.Information);
                     FillStackPanel();
                 }
             };
 
             RightStackPanel.Children.Add(EditBtn);
             RightStackPanel.Children.Add(DeleteBtn);
-            RightStackPanel.Children.Add(NoteBtn);
             ItemDockPanel.Children.Add(RightStackPanel);
             MainStackPanel.Children.Add(border);
         }
 
+
         public void FillStackPanel()
         {
             MainStackPanel.Children.Clear();
-            List<Models.Subject> subjects = _dbContext.Subjects.ToList();
+            List<SchoolPlanner.Models.Grade> grades = _dbContext.Grades.Include(g => g.IdSubjectNavigation)
+                                                                        .Include(g => g.IdLessonTypeNavigation)
+                                                                        .ToList();
 
-            foreach (var item in subjects)
+            foreach (var grade in grades)
             {
-                CreateStackPanel(item);
+                CreateStackPanel(grade);
             }
         }
 
-        private void AddNewSubjectBtn_Click(object sender, RoutedEventArgs e)
+        private void AddNewGradeBtn_Click(object sender, RoutedEventArgs e)
         {
-            AddEditSubject addSubject = new AddEditSubject();
-            addSubject.Closed += AddSubject_Closed;
-            addSubject.ShowDialog();
+            AddEditGrade addGrade = new AddEditGrade();
+            addGrade.Closed += AddGrade_Closed;
+            addGrade.ShowDialog();
         }
 
-        private void AddSubject_Closed(object? sender, EventArgs e)
+        private void AddGrade_Closed(object? sender, EventArgs e)
         {
             FillStackPanel();
         }

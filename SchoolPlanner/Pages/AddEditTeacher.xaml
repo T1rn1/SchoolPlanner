@@ -17,7 +17,7 @@
 
     <Border CornerRadius="10" BorderBrush="{StaticResource PrimaryBackgroundColor}" BorderThickness="1" Background="{DynamicResource SecundaryBackgroundColor}">
         <StackPanel x:Name="MainStackPanel" Orientation="Vertical">
-            <TextBlock Text="Добавить нового преподавателя" Style="{StaticResource TextBlockStyle}" FontSize="30" HorizontalAlignment="Center" Margin="20"/>
+            <TextBlock x:Name="TitletextBlock" Text="Добавление нового преподавателя" Style="{StaticResource TextBlockStyle}" FontSize="30" HorizontalAlignment="Center" Margin="20"/>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center">
                 <TextBox x:Name="FullNameTextBox" ToolTip="ФИО" Style="{StaticResource PlaceholderTextBoxStyle}" Margin="10"/>
                 <TextBox x:Name="TelephoneNumberTextBox" ToolTip="Номер телефона" Style="{StaticResource PlaceholderTextBoxStyle}" Margin="10"/>

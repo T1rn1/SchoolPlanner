@@ -11,10 +11,11 @@
     <Border CornerRadius="5" Background="{DynamicResource SecundaryBackgroundColor}">
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="PreviousWeekButton" Content="Previous Week" Click="PreviousWeekButton_Click" Margin="5"/>
-                <Button x:Name="NextWeekButton" Content="Next Week" Click="NextWeekButton_Click" Margin="5"/>
+                <Button x:Name="AddNewLessonButton" Content="+" FontSize="20" Padding="0" Style="{StaticResource RoundedButtonStyle}" Click="AddNewLessonButton_Click" Margin="5" Width="30"/>
+                <Button x:Name="PreviousWeekButton" Content="Предыдущая неделя" Style="{StaticResource RoundedButtonStyle}" Click="PreviousWeekButton_Click" Margin="5" Width="210"/>
+                <Button x:Name="NextWeekButton" Content="Следующая неделя" Style="{StaticResource RoundedButtonStyle}" Click="NextWeekButton_Click" Margin="5" Width="199"/>
             </StackPanel>
-            <Grid x:Name="scheduleGrid" />
+            <Grid x:Name="scheduleGrid" Margin="20"/>
         </StackPanel>
     </Border>
 </Page>

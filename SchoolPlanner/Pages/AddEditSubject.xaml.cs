@@ -1,23 +1,9 @@
 ﻿using SchoolPlanner.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace SchoolPlanner.Pages
 {
-    /// <summary>
-    /// Логика взаимодействия для AddEditSubject.xaml
-    /// </summary>
     public partial class AddEditSubject : Window
     {
         private SchoolPlannerContext _dbContext = MainWindow.dbContext;
@@ -26,64 +12,71 @@ namespace SchoolPlanner.Pages
         public AddEditSubject(Models.Subject subject = null)
         {
             InitializeComponent();
+            FillComboBoxes();
             _currentSubject = subject;
             if (_currentSubject != null)
             {
                 PopulateFields();
             }
-            FillComboBoxes();
         }
 
         public void FillComboBoxes()
         {
-            var cyclicCommissionNames = _dbContext.Cycliccommissions
-                                    .Select(c => c.Name)
-                                    .ToList();
+            var cyclicCommissions = _dbContext.Cycliccommissions.ToList();
+            cyclicCommissions.Insert(0, new Models.Cycliccommission { Id = 0, Name = "не задано" });
 
-            cyclicCommissionNames.Insert(0, null);
+            CyclicCommissionComboBox.ItemsSource = cyclicCommissions;
+            CyclicCommissionComboBox.DisplayMemberPath = "Name";
+            CyclicCommissionComboBox.SelectedValuePath = "Id";
 
-            CyclicCommissionComboBox.Items.Clear();
+            var teachers = _dbContext.Teachers.ToList();
+            teachers.Insert(0, new Models.Teacher { Id = 0, FullName = "не задано" });
 
-            foreach (var name in cyclicCommissionNames)
-            {
-                CyclicCommissionComboBox.Items.Add(name);
-            }
-
-            var teachersNames = _dbContext.Teachers
-                                               .Select(t => t.FullName)
-                                               .ToList();
-
-            teachersNames.Insert(0, null);
-
-            TeacherFullNameComboBox.Items.Clear();
-
-            foreach (var name in teachersNames)
-            {
-                TeacherFullNameComboBox.Items.Add(name);
-            }
-
+            TeacherFullNameComboBox.ItemsSource = teachers;
+            TeacherFullNameComboBox.DisplayMemberPath = "FullName";
+            TeacherFullNameComboBox.SelectedValuePath = "Id";
         }
 
         private void PopulateFields()
         {
-            var teacherFullName = _dbContext.Teachers
-                            .Where(t => t.Id == _currentSubject.IdTeacher)
-                            .Select(t => t.FullName)
-                            .FirstOrDefault() ?? "не задано";
-
-            var cyclicCommissionName = _dbContext.Cycliccommissions
-                            .Where(t => t.Id == _currentSubject.IdCyclicCommission)
-                            .Select(t => t.Name)
-                            .FirstOrDefault() ?? "не задано";
+            TitleTextBlock.Text = "Редактирование предмета";
 
             SubjectNameTextBox.Text = _currentSubject.Name;
-            TeacherFullNameComboBox.Text = teacherFullName;
-            CyclicCommissionComboBox.Text = cyclicCommissionName;
+            TeacherFullNameComboBox.SelectedValue = _currentSubject.IdTeacher;
+            CyclicCommissionComboBox.SelectedValue = _currentSubject.IdCyclicCommission;
+            NoteTextBox.Text = _currentSubject.Note;
         }
 
         private void AddNewSubjectBtn_Click(object sender, RoutedEventArgs e)
         {
+            int? teacherId = (int)TeacherFullNameComboBox.SelectedValue == 0 ? (int?)null : (int)TeacherFullNameComboBox.SelectedValue;
+            int? cyclicCommissionId = (int)CyclicCommissionComboBox.SelectedValue == 0 ? (int?)null : (int)CyclicCommissionComboBox.SelectedValue;
 
+            Models.Subject newSubject = new Models.Subject
+            {
+                Name = SubjectNameTextBox.Text,
+                IdTeacher = teacherId,
+                IdCyclicCommission = cyclicCommissionId,
+                Note = NoteTextBox.Text
+            };
+
+            if (_currentSubject != null)
+            {
+                _currentSubject.Name = newSubject.Name;
+                _currentSubject.IdTeacher = newSubject.IdTeacher;
+                _currentSubject.IdCyclicCommission = newSubject.IdCyclicCommission;
+                _currentSubject.Note = newSubject.Note;
+                _dbContext.SaveChanges();
+                MessageBox.Show("Данные предмета успешно обновлены.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                _dbContext.Subjects.Add(newSubject);
+                _dbContext.SaveChanges();
+                MessageBox.Show("Новый предмет успешно добавлен.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+
+            Close();
         }
 
         private void CloseBtn_Click(object sender, RoutedEventArgs e)

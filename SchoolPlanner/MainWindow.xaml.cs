@@ -1,6 +1,8 @@
 ﻿using SchoolPlanner.Models;
 using SchoolPlanner.Pages;
+using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
@@ -18,6 +20,7 @@ namespace SchoolPlanner
             InitializeComponent();
 
             dbContext = new SchoolPlannerContext();
+            btnDashboard.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         }
 
         private void BG_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -185,7 +188,8 @@ namespace SchoolPlanner
 
         private void btnProductStock_Click(object sender, RoutedEventArgs e)
         {
-
+            Pages.Grade gradePage = new Pages.Grade();
+            fContainer.Navigate(gradePage);
         }
         private void btnPass_Click(object sender, RoutedEventArgs e)
         {

@@ -1,169 +1,291 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SchoolPlanner;
 using SchoolPlanner.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace SchoolPlanner.Pages
 {
-    /// <summary>
-    /// Lógica de interacción para Dashboard.xaml
-    /// </summary>
     public partial class Dashboard : Page
     {
         private SchoolPlannerContext _dbContext = MainWindow.dbContext;
+        private Style TextBlockStyle;
+        private Brush TextTertiaryColor;
+        private Brush TextFourthColor;
+        private Brush PrimaryBackgroundColor;
+        private PathGeometry DeletePathGeometry;
+        private DateTime currentWeekStartDate;
 
-        private List<(TimeOnly, TimeOnly)> timeSlots;
-        private DateOnly _currentWeekStart;
         public Dashboard()
         {
             InitializeComponent();
-            InitializeTimeSlots();
-            LoadSchedule();
+            InitializeResources();
+            currentWeekStartDate = GetStartOfWeek(DateTime.Today);
+            InitializeScheduleGrid();
         }
 
-        private void InitializeTimeSlots()
+        private void InitializeResources()
         {
-            timeSlots = new List<(TimeOnly, TimeOnly)>
+            TextBlockStyle = (Style)FindResource("TextBlockStyle");
+            TextTertiaryColor = (Brush)FindResource("TextTertiaryColor");
+            TextFourthColor = (Brush)FindResource("TextFourthColor");
+            PrimaryBackgroundColor = (Brush)FindResource("PrimaryBackgroundColor");
+            DeletePathGeometry = (PathGeometry)FindResource("delete");
+        }
+
+        private void InitializeScheduleGrid()
+        {
+            scheduleGrid.ColumnDefinitions.Clear();
+            scheduleGrid.RowDefinitions.Clear();
+            scheduleGrid.Children.Clear();
+
+            AddColumnsAndHeaders();
+            AddTimeSlotsAndLessons();
+        }
+
+        private void AddColumnsAndHeaders()
+        {
+            string[] daysOfWeek = { "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье" };
+
+            for (int i = 0; i < 8; i++)
             {
-                (new TimeOnly(8, 0), new TimeOnly(9, 40)),
-                (new TimeOnly(9, 50), new TimeOnly(11, 30)),
-                (new TimeOnly(11, 50), new TimeOnly(13, 30)),
-                (new TimeOnly(13, 40), new TimeOnly(15, 20)),
-                (new TimeOnly(15, 40), new TimeOnly(17, 20)),
-                (new TimeOnly(17, 30), new TimeOnly(19, 10)),
-                (new TimeOnly(19, 20), new TimeOnly(21, 0))
+                scheduleGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            }
+
+            scheduleGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+            for (int i = 0; i < daysOfWeek.Length; i++)
+            {
+                AddHeaderToGrid(daysOfWeek[i], i + 1);
+            }
+
+            scheduleGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+            for (int i = 0; i < daysOfWeek.Length; i++)
+            {
+                DateTime date = currentWeekStartDate.AddDays(i);
+                AddDateToGrid(date.ToString("dd.MM.yyyy"), i + 1);
+            }
+        }
+
+        private void AddTimeSlotsAndLessons()
+        {
+            string[] timeSlots =
+            {
+                "8.00-9.40", "9.50-11.30", "11.50-13.30", "13.40-15.20",
+                "15.40-17.20", "17.30-19.10", "19.20-21.00"
+            };
+
+            var scheduleData = _dbContext.Schedules
+                .Include(s => s.IdSubjectNavigation)
+                .ThenInclude(sub => sub.IdTeacherNavigation)
+                .ToList();
+
+            for (int row = 1; row <= timeSlots.Length; row++)
+            {
+                scheduleGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                AddTimeSlotToGrid(timeSlots[row - 1], row + 1);
+
+                for (int col = 1; col <= 7; col++)
+                {
+                    DateTime date = currentWeekStartDate.AddDays(col - 1);
+                    var lesson = scheduleData.FirstOrDefault(s => s.Date.ToDateTime(new TimeOnly()) == date && GetTimeSlotIndex(s.Time) == row - 1);
+
+                    AddLessonToGrid(lesson, row + 1, col);
+                }
+            }
+        }
+
+        private void AddHeaderToGrid(string header, int column)
+        {
+            var border = CreateBorder();
+            Grid.SetRow(border, 0);
+            Grid.SetColumn(border, column);
+            scheduleGrid.Children.Add(border);
+
+            var textBlock = CreateTextBlock(header);
+            Grid.SetRow(textBlock, 0);
+            Grid.SetColumn(textBlock, column);
+            scheduleGrid.Children.Add(textBlock);
+        }
+
+        private void AddDateToGrid(string date, int column)
+        {
+            var border = CreateBorder();
+            Grid.SetRow(border, 1);
+            Grid.SetColumn(border, column);
+            scheduleGrid.Children.Add(border);
+
+            var textBlock = CreateTextBlock(date);
+            Grid.SetRow(textBlock, 1);
+            Grid.SetColumn(textBlock, column);
+            scheduleGrid.Children.Add(textBlock);
+        }
+
+        private void AddTimeSlotToGrid(string timeSlot, int row)
+        {
+            var border = CreateBorder();
+            Grid.SetRow(border, row);
+            Grid.SetColumn(border, 0);
+            scheduleGrid.Children.Add(border);
+
+            var textBlock = CreateTextBlock(timeSlot);
+            Grid.SetRow(textBlock, row);
+            Grid.SetColumn(textBlock, 0);
+            scheduleGrid.Children.Add(textBlock);
+        }
+
+        private void AddLessonToGrid(Schedule lesson, int row, int column)
+        {
+            string lessonName = lesson?.IdSubjectNavigation?.Name ?? string.Empty;
+            string teacherName = lesson?.IdSubjectNavigation?.IdTeacherNavigation?.FullName ?? string.Empty;
+            string room = lesson?.Class.ToString() ?? string.Empty;
+
+            string displayTeacher = teacherName.Length > 20 ? GetTeacherInitials(teacherName) : teacherName;
+
+            var border = CreateLessonBorder(column);
+            Grid.SetRow(border, row);
+            Grid.SetColumn(border, column);
+            scheduleGrid.Children.Add(border);
+
+            var textBlock = new TextBlock
+            {
+                Text = $"{lessonName}\n{displayTeacher}\n{room}",
+                HorizontalAlignment = HorizontalAlignment.Center,
+                FontSize = 12,
+                Style = TextBlockStyle,
+                Foreground = PrimaryBackgroundColor,
+                TextWrapping = TextWrapping.Wrap
+            };
+
+            Grid.SetRow(textBlock, row);
+            Grid.SetColumn(textBlock, column);
+            scheduleGrid.Children.Add(textBlock);
+
+            if (lesson != null)
+            {
+
+                Path DeletePath = new Path
+                {
+                    Data = DeletePathGeometry,
+                    Fill = PrimaryBackgroundColor,
+                    StrokeThickness = 1
+                };
+
+                var deleteButton = new Button
+                {
+                    Content = DeletePath,
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Bottom,
+                    Margin = new Thickness(5),
+                    FontSize = 10,
+                    Background = TextFourthColor,
+                    Foreground = TextTertiaryColor,
+                };
+
+                deleteButton.Click += (sender, e) => DeleteLesson(lesson, row, column);
+
+                Grid.SetRow(deleteButton, row);
+                Grid.SetColumn(deleteButton, column);
+                scheduleGrid.Children.Add(deleteButton);
+            }
+        }
+
+        private void DeleteLesson(Schedule lesson, int row, int column)
+        {
+            if (lesson != null)
+            {
+                _dbContext.Schedules.Remove(lesson);
+                _dbContext.SaveChanges();
+
+                InitializeScheduleGrid();
+            }
+        }
+
+
+        private Border CreateBorder()
+        {
+            return new Border
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                CornerRadius = new CornerRadius(5)
             };
         }
 
-        private void LoadSchedule()
+        private TextBlock CreateTextBlock(string text)
         {
-            var scheduleData = _dbContext.Schedules
-                .Include(s => s.IdSubjectNavigation)
-                .Include(s => s.IdPassNavigation)
-                .OrderBy(s => s.Date)
-                .ThenBy(s => s.Time)
-                .ToList();
-
-            var today = DateOnly.FromDateTime(DateTime.Today.AddDays(-10));
-            var weekDates = GetWeekDates(today);
-
-            string[] daysOfWeek = { "", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье" };
-            for (int i = 0; i < daysOfWeek.Length; i++)
+            return new TextBlock
             {
-                scheduleGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                string dayHeader = daysOfWeek[i];
-                if (i > 0)
-                {
-                    dayHeader = $"{daysOfWeek[i]}\n({weekDates[i - 1].ToString("dd.MM")})";
-                }
+                Text = text,
+                FontWeight = FontWeights.Bold,
+                Style = TextBlockStyle
+            };
+        }
 
-                var dayLabel = new Label
-                {
-                    Content = dayHeader,
-                    FontWeight = FontWeights.Bold,
-                    HorizontalAlignment = HorizontalAlignment.Center
-                };
-                Grid.SetColumn(dayLabel, i);
-                Grid.SetRow(dayLabel, 0);
-                scheduleGrid.Children.Add(dayLabel);
-            }
-
-            for (int i = 0; i <= timeSlots.Count; i++)
+        private Border CreateLessonBorder(int column)
+        {
+            return new Border
             {
-                scheduleGrid.RowDefinitions.Add(new RowDefinition());
-            }
+                Background = (column % 2 == 0) ? TextTertiaryColor : TextFourthColor,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                Padding = new Thickness(2),
+                Margin = new Thickness(1),
+                CornerRadius = new CornerRadius(3)
+            };
+        }
 
-            for (int i = 0; i < timeSlots.Count; i++)
-            {
-                var timeLabel = new Label
-                {
-                    Content = $"{timeSlots[i].Item1.ToString("hh\\:mm")}-{timeSlots[i].Item2.ToString("hh\\:mm")}",
-                    HorizontalAlignment = HorizontalAlignment.Center
-                };
-                Grid.SetColumn(timeLabel, 0);
-                Grid.SetRow(timeLabel, i + 1);
-                scheduleGrid.Children.Add(timeLabel);
-            }
+        private string GetTeacherInitials(string fullName)
+        {
+            var nameParts = fullName.Split(' ');
+            if (nameParts.Length == 1) return nameParts[0];
+            if (nameParts.Length == 2)
+                return $"{nameParts[0]} {nameParts[1][0]}.";
+            if (nameParts.Length == 3)
+                return $"{nameParts[0]} {nameParts[1][0]}.{nameParts[2][0]}.";
+            return string.Empty;
+        }
 
-            // Заполнение расписания
-            foreach (var schedule in scheduleData)
-            {
-                int dayColumn = (int)schedule.Date.DayOfWeek;
-                int timeRow = FindTimeSlotIndex(schedule.Time) + 1;
+        private int GetTimeSlotIndex(TimeOnly time)
+        {
+            string[] timeSlots = { "08:00", "09:50", "11:50", "13:40", "15:40", "17:30", "19:20" };
+            for (int i = 0; i < timeSlots.Length; i++)
+                if (TimeOnly.Parse(timeSlots[i]) == time) return i;
+            return -1;
+        }
 
-                // Преобразование дня недели к правильному индексу (понедельник = 1, ..., воскресенье = 7)
-                if (dayColumn == 0) dayColumn = 7;
-
-                if (dayColumn >= 1 && dayColumn <= 7 && timeRow > 0)
-                {
-                    string passNote = schedule.IdPassNavigation?.Note ?? "No Pass";
-                    var subjectLabel = new Label
-                    {
-                        Content = $"{schedule.IdSubjectNavigation.Name} \n({passNote})",
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Background = new SolidColorBrush(Colors.LightGray),
-                        Margin = new Thickness(2)
-                    };
-                    Grid.SetColumn(subjectLabel, dayColumn);
-                    Grid.SetRow(subjectLabel, timeRow);
-                    scheduleGrid.Children.Add(subjectLabel);
-                }
-            }
+        private DateTime GetStartOfWeek(DateTime date)
+        {
+            int diff = (date.DayOfWeek - DayOfWeek.Monday + 7) % 7;
+            return date.AddDays(-diff).Date;
         }
 
         private void PreviousWeekButton_Click(object sender, RoutedEventArgs e)
         {
-            scheduleGrid.Children.Clear();
-            _currentWeekStart = _currentWeekStart.AddDays(-7);
-            LoadSchedule();
+            currentWeekStartDate = currentWeekStartDate.AddDays(-7);
+            InitializeScheduleGrid();
         }
 
         private void NextWeekButton_Click(object sender, RoutedEventArgs e)
         {
-            scheduleGrid.Children.Clear();
-            _currentWeekStart = _currentWeekStart.AddDays(7);
-            LoadSchedule();
+            currentWeekStartDate = currentWeekStartDate.AddDays(7);
+            InitializeScheduleGrid();
         }
 
-        private int FindTimeSlotIndex(TimeOnly time)
+        private void AddNewLessonButton_Click(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < timeSlots.Count; i++)
+            AddEditLesson addEditLesson = new AddEditLesson();
+
+            addEditLesson.Closed += (s, args) =>
             {
-                if (time >= timeSlots[i].Item1 && time <= timeSlots[i].Item2)
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
+                InitializeScheduleGrid();
+            };
 
-        public static List<DateOnly> GetWeekDates(DateOnly date)
-        {
-            var startOfWeek = date;
-
-            startOfWeek = startOfWeek.AddDays(-(int)startOfWeek.DayOfWeek + (int)DayOfWeek.Monday);
-
-            var weekDates = new List<DateOnly>();
-            for (int i = 0; i < 7; i++)
-            {
-                weekDates.Add(startOfWeek.AddDays(i));
-            }
-
-            return weekDates;
+            addEditLesson.ShowDialog();
         }
     }
 }

@@ -202,7 +202,6 @@
     <!-- Start: TextBlock -->
     <Style x:Key="TextBlockStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{DynamicResource TextTertiaryColor}"/>
-        <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="FontSize" Value="15"/>
     </Style>
     <!-- End: TextBlock -->
@@ -388,6 +387,7 @@
     </Style>
     <!-- End: ScrollViewer -->
 
+    <!-- Start: ComboBox -->
     <Style x:Key="ComboboxButtonStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Template">
             <Setter.Value>
@@ -437,68 +437,121 @@
                 <ControlTemplate TargetType="{x:Type ComboBox}">
                     <Grid>
                         <Border 
-                            x:Name="MainBorder" 
-                            Background="{StaticResource PrimaryBackgroundColor}" 
-                            BorderBrush="{StaticResource FourthIconColor}" 
-                            BorderThickness="1" 
-                            CornerRadius="5">
+                        x:Name="MainBorder" 
+                        Background="{StaticResource PrimaryBackgroundColor}" 
+                        BorderBrush="{StaticResource FourthIconColor}" 
+                        BorderThickness="1" 
+                        CornerRadius="5">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <ContentPresenter 
-                                    Name="ContentSite" 
-                                    Content="{TemplateBinding SelectionBoxItem}" 
-                                    ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" 
-                                    ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" 
-                                    VerticalAlignment="Center" 
-                                    HorizontalAlignment="Left" 
-                                    Margin="5,0,0,0"/>
+                                Name="ContentSite" 
+                                Content="{TemplateBinding SelectionBoxItem}" 
+                                ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" 
+                                ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" 
+                                VerticalAlignment="Center" 
+                                HorizontalAlignment="Left" 
+                                Margin="5,0,0,0"/>
                                 <ToggleButton 
-                                    Grid.Column="1" 
-                                    Margin="0" 
-                                    Width="30"
-                                    Height="{TemplateBinding Height}" 
-                                    Style="{StaticResource ComboboxButtonStyle}" 
-                                    Focusable="False" 
-                                    IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
-                                    ClickMode="Press">
+                                Grid.Column="1" 
+                                Margin="0" 
+                                Width="30"
+                                Height="{TemplateBinding Height}" 
+                                Style="{StaticResource ComboboxButtonStyle}" 
+                                Focusable="False" 
+                                IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                                ClickMode="Press">
                                     <Path 
-                                        Grid.Column="1" 
-                                        HorizontalAlignment="Center" 
-                                        VerticalAlignment="Center" 
-                                        Data="M 0 0 L 4 4 L 8 0 Z" 
-                                        Fill="{StaticResource FourthIconColor}" />
+                                    Grid.Column="1" 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center" 
+                                    Data="M 0 0 L 4 4 L 8 0 Z" 
+                                    Fill="{StaticResource FourthIconColor}" />
                                 </ToggleButton>
+                                <TextBlock x:Name="ToolTipTextBlock"
+                                       Foreground="{DynamicResource FourthIconColor}"
+                                       Padding="5,0,0,0"
+                                       VerticalAlignment="Center"
+                                       IsHitTestVisible="False"
+                                       Opacity="0.5"
+                                       Text="{Binding ToolTip, RelativeSource={RelativeSource TemplatedParent}}"
+                                       Visibility="Collapsed"/>
                             </Grid>
                         </Border>
                         <Popup 
-                            Name="Popup" 
-                            Placement="Bottom" 
-                            IsOpen="{TemplateBinding IsDropDownOpen}" 
-                            AllowsTransparency="True" 
-                            Focusable="False" 
-                            PopupAnimation="Slide">
+                        Name="Popup" 
+                        Placement="Bottom" 
+                        IsOpen="{TemplateBinding IsDropDownOpen}" 
+                        AllowsTransparency="True" 
+                        Focusable="False" 
+                        PopupAnimation="Slide">
                             <Grid 
-                                Name="DropDown" 
-                                SnapsToDevicePixels="True" 
-                                MinWidth="{TemplateBinding ActualWidth}" 
-                                MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                            Name="DropDown" 
+                            SnapsToDevicePixels="True" 
+                            MinWidth="{TemplateBinding ActualWidth}" 
+                            MaxHeight="{TemplateBinding MaxDropDownHeight}">
                                 <Border 
-                                    x:Name="DropDownBorder" 
-                                    CornerRadius="5" 
-                                    BorderBrush="{StaticResource FourthIconColor}" 
-                                    Background="{StaticResource PrimaryBackgroundColor}"/>
+                                x:Name="DropDownBorder" 
+                                CornerRadius="5" 
+                                BorderBrush="{StaticResource FourthIconColor}" 
+                                Background="{StaticResource PrimaryBackgroundColor}"/>
                                 <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
                                     <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
                                 </ScrollViewer>
                             </Grid>
                         </Popup>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter TargetName="ToolTipTextBlock" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MainBorder" Property="BorderBrush" Value="#8A94A6" />
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="MainBorder" Property="BorderBrush" Value="#8A94A6" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+    <!-- End: ComboBox -->
 
+    <!-- Start: ToolTip -->
+    <Style x:Key="RoundedToolTipStyle" TargetType="ToolTip">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="HasDropShadow" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToolTip">
+                    <Border 
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="10"
+                    Padding="5">
+                        <ContentPresenter />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Background" Value="#1d2335"/>
+        <Setter Property="Foreground" Value="#4B5D78"/>
+        <Setter Property="BorderBrush" Value="#1d2335"/>
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock 
+                    Text="{Binding}" 
+                    TextWrapping="Wrap"
+                    MaxWidth="300"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!-- End: ToolTip -->
 </ResourceDictionary>

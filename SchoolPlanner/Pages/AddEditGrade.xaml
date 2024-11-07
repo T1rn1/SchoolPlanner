@@ -1,9 +1,8 @@
-﻿<Window x:Class="SchoolPlanner.Pages.AddEditSubject"
+﻿<Window x:Class="SchoolPlanner.Pages.AddEditGrade"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SchoolPlanner.Pages"
         mc:Ignorable="d"
         WindowStyle="None" 
         ResizeMode="NoResize"
@@ -11,21 +10,21 @@
         AllowsTransparency="True"
         Icon="pack://application:,,,/Resources/Icon1.png"
         WindowStartupLocation="CenterScreen" 
-        Title="AddSubject" 
+        Title="AddEditGrade" 
         SizeToContent="Height"
-        Width="600">
+        Width="400">
 
     <Border CornerRadius="10" BorderBrush="{StaticResource PrimaryBackgroundColor}" BorderThickness="1" Background="{DynamicResource SecundaryBackgroundColor}">
         <StackPanel x:Name="MainStackPanel" Orientation="Vertical">
-            <TextBlock x:Name="TitleTextBlock" Text="Добавление нового предмета" Style="{StaticResource TextBlockStyle}" FontSize="30" HorizontalAlignment="Center" Margin="20"/>
+            <TextBlock x:Name="TitleTextBlock" Text="Добавление оценки" Style="{StaticResource TextBlockStyle}" FontSize="30" HorizontalAlignment="Center" Margin="20"/>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                <TextBox x:Name="SubjectNameTextBox" ToolTip="ФИО" Style="{StaticResource PlaceholderTextBoxStyle}" Margin="20,10"/>
-                <ComboBox x:Name="TeacherFullNameComboBox" Style="{StaticResource ComboboxStyle}" Margin="20,5"/>
-                <ComboBox x:Name="CyclicCommissionComboBox" Style="{StaticResource ComboboxStyle}" Margin="20,5"/>
-                <TextBox x:Name="NoteTextBox" ToolTip="Заметки" Style="{StaticResource PlaceholderTextBoxStyle}" Margin="20,10"/>
+                <TextBox x:Name="GradeTextBox" ToolTip="Оценка" Style="{StaticResource PlaceholderTextBoxStyle}" Margin="20,10"/>
+                <DatePicker x:Name="DateDatePicker"  Margin="20,10"/>
+                <ComboBox x:Name="SubjectComboBox" ToolTip="Пердмет" Style="{StaticResource ComboboxStyle}" Margin="20,5"/>
+                <ComboBox x:Name="LessonTypeComboBox" ToolTip="Тип занятия" Style="{StaticResource ComboboxStyle}" Margin="20,5"/>
             </StackPanel>
             <StackPanel Margin="20">
-                <Button x:Name="AddNewSubjectBtn" Content="Сохранить" Style="{StaticResource RoundedButtonStyle}" Margin="0,0,0,10" Click="AddNewSubjectBtn_Click"/>
+                <Button x:Name="SaveGradeBtn" Content="Сохранить" Style="{StaticResource RoundedButtonStyle}" Margin="0,0,0,10" Click="SaveGradeBtn_Click"/>
                 <Button x:Name="CloseBtn" Content="Отменить" Style="{StaticResource RoundedButtonStyle}" Click="CloseBtn_Click"/>
             </StackPanel>
         </StackPanel>
