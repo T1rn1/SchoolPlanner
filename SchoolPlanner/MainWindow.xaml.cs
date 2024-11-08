@@ -199,7 +199,8 @@ namespace SchoolPlanner
 
         private void btnHomework_Click(object sender, RoutedEventArgs e)
         {
-
+            Pages.Homework homePage = new Pages.Homework();
+            fContainer.Navigate(homePage);
         }
 
         private void btnSetting_Click(object sender, RoutedEventArgs e)

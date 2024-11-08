@@ -20,8 +20,8 @@
             <TextBlock x:Name="TitleTextBlock" Text="Добавление нового предмета" Style="{StaticResource TextBlockStyle}" FontSize="30" HorizontalAlignment="Center" Margin="20"/>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center">
                 <TextBox x:Name="SubjectNameTextBox" ToolTip="ФИО" Style="{StaticResource PlaceholderTextBoxStyle}" Margin="20,10"/>
-                <ComboBox x:Name="TeacherFullNameComboBox" Style="{StaticResource ComboboxStyle}" Margin="20,5"/>
-                <ComboBox x:Name="CyclicCommissionComboBox" Style="{StaticResource ComboboxStyle}" Margin="20,5"/>
+                <ComboBox x:Name="TeacherFullNameComboBox" ToolTip="преподаватель" Style="{StaticResource ComboboxStyle}" Margin="20,5"/>
+                <ComboBox x:Name="CyclicCommissionComboBox" ToolTip="Цикловая комиссия" Style="{StaticResource ComboboxStyle}" Margin="20,5"/>
                 <TextBox x:Name="NoteTextBox" ToolTip="Заметки" Style="{StaticResource PlaceholderTextBoxStyle}" Margin="20,10"/>
             </StackPanel>
             <StackPanel Margin="20">

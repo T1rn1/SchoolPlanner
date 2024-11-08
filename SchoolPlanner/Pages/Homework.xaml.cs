@@ -9,7 +9,7 @@ using System.Windows.Media;
 
 namespace SchoolPlanner.Pages
 {
-    public partial class Pass : Page
+    public partial class Homework : Page
     {
         private SchoolPlannerContext _dbContext = MainWindow.dbContext;
 
@@ -20,7 +20,7 @@ namespace SchoolPlanner.Pages
         private PathGeometry EditPathGeometry;
         private PathGeometry DeletePathGeometry;
 
-        public Pass()
+        public Homework()
         {
             InitializeComponent();
 
@@ -34,13 +34,13 @@ namespace SchoolPlanner.Pages
             FillStackPanel();
         }
 
-        public void CreateStackPanel(Models.Pass pass)
+        public void CreateStackPanel(Models.Homework homework)
         {
             DockPanel ItemDockPanel = new DockPanel
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Center,
-                Tag = pass.Id,
+                Tag = homework.Id,
             };
 
             Border border = new Border
@@ -65,16 +65,16 @@ namespace SchoolPlanner.Pages
                 Margin = new Thickness(10)
             };
 
-            TextBlock DateTextBlock = new TextBlock
+            TextBlock SubjectTextBlock = new TextBlock
             {
-                Text = "Дата",
+                Text = "Предмет",
                 Style = TextBlockStyle,
                 Margin = new Thickness(10),
             };
 
-            TextBox DateTextBox = new TextBox
+            TextBox SubjectTextBox = new TextBox
             {
-                Text = pass.Date.ToString(),
+                Text = homework.IdSubjectNavigation?.Name ?? "Не задано",
                 Margin = new Thickness(10),
                 Style = placeholderTextBoxStyle,
                 IsReadOnly = true,
@@ -88,16 +88,16 @@ namespace SchoolPlanner.Pages
                 Margin = new Thickness(10)
             };
 
-            TextBlock TimeTextBlock = new TextBlock
+            TextBlock TaskTextBlock = new TextBlock
             {
-                Text = "Время",
+                Text = "Задание",
                 Style = TextBlockStyle,
                 Margin = new Thickness(10),
             };
 
-            TextBox TimeTextBox = new TextBox
+            TextBox TaskTextBox = new TextBox
             {
-                Text = pass.Time.ToString(),
+                Text = homework.Tusk,
                 Margin = new Thickness(10),
                 Style = placeholderTextBoxStyle,
                 IsReadOnly = true,
@@ -106,29 +106,6 @@ namespace SchoolPlanner.Pages
             };
 
             StackPanel innerStackPanel3 = new StackPanel
-            {
-                Orientation = Orientation.Vertical,
-                Margin = new Thickness(10)
-            };
-
-            TextBlock ReasonTextBlock = new TextBlock
-            {
-                Text = "Причина",
-                Style = TextBlockStyle,
-                Margin = new Thickness(10),
-            };
-
-            TextBox ReasonTextBox = new TextBox
-            {
-                Text = pass.IdReasonNavigation?.Name ?? "не задано",
-                Margin = new Thickness(10),
-                Style = placeholderTextBoxStyle,
-                IsReadOnly = true,
-                MinWidth = 100,
-                MaxWidth = 150,
-            };
-
-            StackPanel innerStackPanel4 = new StackPanel
             {
                 Orientation = Orientation.Vertical,
                 Margin = new Thickness(10)
@@ -143,7 +120,7 @@ namespace SchoolPlanner.Pages
 
             TextBox NoteTextBox = new TextBox
             {
-                Text = pass.Note ?? "нет заметок",
+                Text = string.IsNullOrWhiteSpace(homework.Note) ? "Нет заметки" : homework.Note,
                 Margin = new Thickness(10),
                 Style = placeholderTextBoxStyle,
                 IsReadOnly = true,
@@ -151,19 +128,16 @@ namespace SchoolPlanner.Pages
                 MaxWidth = 150,
             };
 
-            innerStackPanel1.Children.Add(DateTextBlock);
-            innerStackPanel1.Children.Add(DateTextBox);
-            innerStackPanel2.Children.Add(TimeTextBlock);
-            innerStackPanel2.Children.Add(TimeTextBox);
-            innerStackPanel3.Children.Add(ReasonTextBlock);
-            innerStackPanel3.Children.Add(ReasonTextBox);
-            innerStackPanel4.Children.Add(NoteTextBlock);
-            innerStackPanel4.Children.Add(NoteTextBox);
+            innerStackPanel1.Children.Add(SubjectTextBlock);
+            innerStackPanel1.Children.Add(SubjectTextBox);
+            innerStackPanel2.Children.Add(TaskTextBlock);
+            innerStackPanel2.Children.Add(TaskTextBox);
+            innerStackPanel3.Children.Add(NoteTextBlock);
+            innerStackPanel3.Children.Add(NoteTextBox);
 
             LeftStackPanel.Children.Add(innerStackPanel1);
             LeftStackPanel.Children.Add(innerStackPanel2);
             LeftStackPanel.Children.Add(innerStackPanel3);
-            LeftStackPanel.Children.Add(innerStackPanel4);
 
             ItemDockPanel.Children.Add(LeftStackPanel);
 
@@ -206,23 +180,23 @@ namespace SchoolPlanner.Pages
 
             EditBtn.Click += (s, e) =>
             {
-                Models.Pass entityToEdit = _dbContext.Passes.Find(ItemDockPanel.Tag);
+                Models.Homework entityToEdit = _dbContext.Homeworks.Find(ItemDockPanel.Tag);
                 if (entityToEdit != null)
                 {
-                    AddEditPass addEditPass = new AddEditPass(entityToEdit);
-                    addEditPass.Closed += AddPass_Closed;
-                    addEditPass.ShowDialog();
+                    AddEditHomework addEditHomework = new AddEditHomework(entityToEdit);
+                    addEditHomework.Closed += AddHomework_Closed;
+                    addEditHomework.ShowDialog();
                 }
             };
 
             DeleteBtn.Click += (s, e) =>
             {
-                Models.Pass entityToDelete = _dbContext.Passes.Find(ItemDockPanel.Tag);
+                Models.Homework entityToDelete = _dbContext.Homeworks.Find(ItemDockPanel.Tag);
                 if (_dbContext != null && entityToDelete != null)
                 {
-                    _dbContext.Passes.Remove(entityToDelete);
+                    _dbContext.Homeworks.Remove(entityToDelete);
                     _dbContext.SaveChanges();
-                    MessageBox.Show($"Пропуск от {entityToDelete.Date} успешно удален", "Удаление", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show($"Домашнее задание \"{entityToDelete.Tusk}\" успешно удалено", "Удаление", MessageBoxButton.OK, MessageBoxImage.Information);
                     FillStackPanel();
                 }
             };
@@ -236,22 +210,22 @@ namespace SchoolPlanner.Pages
         public void FillStackPanel()
         {
             MainStackPanel.Children.Clear();
-            List<Models.Pass> passes = _dbContext.Passes.Include(p => p.IdReasonNavigation).ToList();
+            List<Models.Homework> homeworks = _dbContext.Homeworks.Include(h => h.IdSubjectNavigation).ToList();
 
-            foreach (var pass in passes)
+            foreach (var homework in homeworks)
             {
-                CreateStackPanel(pass);
+                CreateStackPanel(homework);
             }
         }
 
-        private void AddNewPassBtn_Click(object sender, RoutedEventArgs e)
+        private void AddNewHomeworkBtn_Click(object sender, RoutedEventArgs e)
         {
-            AddEditPass addEditPass = new AddEditPass();
-            addEditPass.Closed += AddPass_Closed;
-            addEditPass.ShowDialog();
+            AddEditHomework addEditHomeworkPage = new AddEditHomework();
+            addEditHomeworkPage.Closed += AddHomework_Closed;
+            addEditHomeworkPage.ShowDialog();
         }
 
-        private void AddPass_Closed(object? sender, EventArgs e)
+        private void AddHomework_Closed(object? sender, EventArgs e)
         {
             FillStackPanel();
         }

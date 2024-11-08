@@ -13,6 +13,7 @@ namespace SchoolPlanner.Pages
     {
         private SchoolPlannerContext _dbContext = MainWindow.dbContext;
         private Style TextBlockStyle;
+        private Style RoundedButtonStyle;
         private Brush TextTertiaryColor;
         private Brush TextFourthColor;
         private Brush PrimaryBackgroundColor;
@@ -30,6 +31,7 @@ namespace SchoolPlanner.Pages
         private void InitializeResources()
         {
             TextBlockStyle = (Style)FindResource("TextBlockStyle");
+            RoundedButtonStyle = (Style)FindResource("RoundedButtonStyle");
             TextTertiaryColor = (Brush)FindResource("TextTertiaryColor");
             TextFourthColor = (Brush)FindResource("TextFourthColor");
             PrimaryBackgroundColor = (Brush)FindResource("PrimaryBackgroundColor");
@@ -180,10 +182,10 @@ namespace SchoolPlanner.Pages
                     Content = DeletePath,
                     HorizontalAlignment = HorizontalAlignment.Right,
                     VerticalAlignment = VerticalAlignment.Bottom,
-                    Margin = new Thickness(5),
+                    Margin = new Thickness(3),
                     FontSize = 10,
-                    Background = TextFourthColor,
-                    Foreground = TextTertiaryColor,
+                    Height = DeletePath.Height,
+                    Style = RoundedButtonStyle,
                 };
 
                 deleteButton.Click += (sender, e) => DeleteLesson(lesson, row, column);
